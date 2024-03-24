@@ -1,7 +1,11 @@
+// Mouhana Almouhana
+// MouhanaAlmouhana@gmail.com
+
+
 import 'package:flutter/material.dart';
 import './employeeCard.dart';
-import './greenButton.dart';
-import './redButton.dart';
+import './iconButton.dart';
+import './btnTypes.dart';
 
 
 class employeeListCard extends StatelessWidget {
@@ -14,11 +18,11 @@ class employeeListCard extends StatelessWidget {
 
   statusButtons(employee) {
     return employee["status"]
-        ? redButton(text: "Deactivate Employee", icon: Icons.block_outlined)
-        : greenButton(text: "Activate Employee", icon: Icons.beenhere_outlined);
+        ? const iconButton(text: "Deactivate Employee", icon: Icons.block_outlined, type: btnType.Red,)
+        : const iconButton(text: "Activate Employee", icon: Icons.beenhere_outlined, type: btnType.Green,);
   }
 
   deleteButton(employee) {
-    return redButton(text: "Delete Employee", icon: Icons.delete_outline);
+    return const iconButton(text: "Delete Employee", icon: Icons.delete_outline, type: btnType.Red,);
   }
 }

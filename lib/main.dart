@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
         appBar: AppBar(title: const Text('testing')),
+        body: const employeeListCard(),
       ),
     );
   }

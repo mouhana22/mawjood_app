@@ -1,3 +1,6 @@
+// Mouhana Almouhana
+// MouhanaAlmouhana@gmail.com
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import './employeeCard.dart';
@@ -15,12 +18,12 @@ class employeeAttendanceCard extends StatelessWidget {
   checkInTime(employee) {
     final DateTime date = DateTime.parse(employee["checkIn"]);
     final String checkInMsg = "Checked-In At: ${DateFormat.jm().format(date)}";
-    return infoField(data: checkInMsg, height: 34,width: 137.5);
+    return infoField(data: checkInMsg, height: 34,width: 137.5,textColor: Color.fromRGBO(99, 102, 241, 1));
   }
 
   checkOutTime(employee) {
     final DateTime date = DateTime.parse(employee["checkOut"]);
     final String checkOutMsg = "Checked-Out At: ${DateFormat.jm().format(date)}";
-    return infoField(data: checkOutMsg, height: 34,width: 137.5);
+    return infoField(data: checkOutMsg, height: 34,width: 137.5, textColor: Color.fromRGBO(99, 102, 241, 1),);
   }
 }

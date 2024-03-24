@@ -1,7 +1,12 @@
+// Mouhana Almouhana
+// MouhanaAlmouhana@gmail.com
+
+
 import 'package:flutter/material.dart';
 import './employeeCard.dart';
-import './greenButton.dart';
-import './redButton.dart';
+import './btnTypes.dart';
+import './iconButton.dart';
+import './btnTypes.dart';
 
 
 class employeeRequestCard extends StatelessWidget {
@@ -9,14 +14,14 @@ class employeeRequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EmployeeCard(infoRow:["jobTitle","email","phone"],actionRow: [acceptButton,rejectButton]);
+    return EmployeeCard(infoRow:const ["jobTitle","email","phone"],actionRow: [acceptButton,rejectButton]);
   }
 
   acceptButton(employee) {
-    return greenButton(text: "Accept", icon: Icons.delete_outline);
+    return const iconButton(text: "Accept", icon: Icons.check, type: btnType.Green,);
   }
 
   rejectButton(employee) {
-    return redButton(text: "Reject", icon: Icons.delete_outline);
+    return const iconButton(text: "Reject", icon: Icons.close, type: btnType.Red,);
   }
 }
