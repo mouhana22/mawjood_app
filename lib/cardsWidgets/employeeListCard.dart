@@ -3,18 +3,38 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import './employeeCard.dart';
 import './iconButton.dart';
 import './btnTypes.dart';
 
 
-class employeeListCard extends StatelessWidget {
+class employeeListCard extends StatefulWidget {
   const employeeListCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return EmployeeCard(infoRow:["jobTitle","email","phone","status"],actionRow: [statusButtons,deleteButton]);
+  State<employeeListCard> createState() => _employeeListCardState();
+}
+
+class _employeeListCardState extends State<employeeListCard> {
+
+  List<dynamic> _employees = [];
+  void fetchEmployees() async{
+  const url = "https://65c8f413a4fbc162e1126b21.mockapi.io/employee";
+  final uri = Uri.parse(url);
+  final response = await http.get(uri);
+  _employees = jsonDecode(response.body);
   }
+
+  @override
+  Widget build(BuildContext context) {
+    fetchEmployees();
+
+    return EmployeeCard(employees: _employees ,infoRow:["jobTitle","email","phone","status"],actionRow: [statusButtons,deleteButton]);
+  }
+
+
 
   statusButtons(employee) {
     return employee["status"]

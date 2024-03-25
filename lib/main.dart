@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './cardsWidgets/employeeListCard.dart';
 import './cardsWidgets/employeeRequestCard.dart';
 import './cardsWidgets/employeeAttendanceCard.dart';
+import './cardsWidgets/locationCard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
         appBar: AppBar(title: const Text('testing')),
-        body: const employeeListCard(),
+        body: const employeeAttendanceCard(),
       ),
     );
   }
