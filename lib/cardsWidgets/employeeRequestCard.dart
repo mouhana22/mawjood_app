@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import './employeeCard.dart';
-import './iconButton.dart';
-import './btnTypes.dart';
+import '../widgets/iconButton.dart';
+import '../widgets/btnTypes.dart';
 
 
 class employeeRequestCard extends StatefulWidget {

@@ -2,7 +2,7 @@
 // MouhanaAlmouhana@gmail.com
 
 import 'package:flutter/material.dart';
-import './btnTypes.dart';
+import 'btnTypes.dart';
 
 
 

@@ -2,7 +2,7 @@
 // MouhanaAlmouhana@gmail.com
 
 import 'package:flutter/material.dart';
-import './btnTypes.dart';
+import 'btnTypes.dart';
 
 
 
@@ -13,11 +13,13 @@ class iconButton extends StatelessWidget {
     required this.icon, 
     required this.type,
     this.height = 34,
-    this.width = 137.5
+    this.width = 137.5,
+    this.fontSize = 10
   });
   final double width;
   final double height;
   final String text;
+  final double fontSize;
   final IconData icon;
   final btnType type;
   @override
@@ -44,7 +46,7 @@ class iconButton extends StatelessWidget {
           }
     return ElevatedButton.icon(
       onPressed: () {},
-      label: Text(text, style:TextStyle(color: textColor, fontSize: 10),),
+      label: Text(text, style:TextStyle(color: textColor, fontSize: fontSize),),
       icon:  Icon(icon, color: iconColor,),
       style:  ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,

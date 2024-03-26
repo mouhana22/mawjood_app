@@ -17,9 +17,6 @@ class cardWidget extends StatefulWidget {
 
 class _cardWidgetState extends State<cardWidget> {
 
-
-
-
   @override
   Widget build(BuildContext context) {
     

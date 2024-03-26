@@ -4,9 +4,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import './cardWidget.dart';
-import './infoField.dart';
-import './avatar.dart';
+import '../widgets/cardWidget.dart';
+import '../widgets/infoField.dart';
+import '../widgets/imageWidget.dart';
 
 class EmployeeCard extends StatefulWidget {
   final List<String> infoRow;
@@ -37,7 +37,7 @@ class _EmployeeCardState extends State<EmployeeCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  avatar(avatarURL: employee["avatar"]),
+                  imageWidget(avatarURL: employee["avatar"]),
                   const SizedBox(
                     width: 20,
                   ),

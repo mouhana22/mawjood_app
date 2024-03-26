@@ -3,12 +3,14 @@
 
 import 'package:flutter/material.dart';
 
-class avatar extends StatelessWidget {
-  const avatar({
-    super.key, required this.avatarURL,
+class imageWidget extends StatelessWidget {
+  const imageWidget({
+    super.key, required this.avatarURL, this.width = 120, this.height = 120,
  
   });
   final String avatarURL;
+  final double width;
+  final double height;
   @override
   Widget build(BuildContext context) {
 
