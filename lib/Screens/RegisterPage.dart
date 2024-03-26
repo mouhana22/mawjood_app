@@ -1,3 +1,4 @@
+//import all widgets/packages
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/cardsWidgets/btnTypes.dart';
 import 'package:mawjood_app/cardsWidgets/button.dart';
@@ -78,7 +79,7 @@ class RegisterPage extends StatelessWidget {
               Checkbox(
                 value: false, 
                 onChanged: (bool? newValue) {
-                  // Add the state handling logic later
+                  // ****Add the state handling logic here later****
                 },
               ),
               Text('I agree to the terms')
@@ -97,7 +98,7 @@ class RegisterPage extends StatelessWidget {
               Text('Or register with check in'),
               GestureDetector(
                 onTap: () {
-                  // Add the action here later
+                  // ****Add the action here later****
                 },
                 child: Text(
                   'check in ',
