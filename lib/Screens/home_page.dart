@@ -74,9 +74,6 @@ class _HomePageState extends State<HomePage> {
                           if (hasAccount) {
                             // Navigate to CheckInScreen
                             Navigator.pushNamed(context, '/CheckIn');
-                          } else {
-                            // Navigate to UnrecognizedScreen
-                            Navigator.pushNamed(context, '/unrecognized');
                           }
                         },
                       ),
