@@ -29,10 +29,16 @@ class _locationCardState extends State<locationCard> {
   _locations = jsonDecode(response.body);
   }
 
+  bool readOnly = true;
+  void editFields(){
+    setState(() {
+      readOnly = !readOnly;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     fetchLocations();
-
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         itemCount: _locations.length,
@@ -43,13 +49,13 @@ class _locationCardState extends State<locationCard> {
             cardBody: [
                 mapWidget(),
                 SizedBox(height: 20,),
-                inputTextField(lablel: "name:", content: location["name"],readOnly: true,),
+                inputTextField(lablel: "name:", content: location["name"],readOnly: readOnly,),
                 SizedBox(height: 20,),
-                inputTextField(lablel: "Address:", content: location["street"],readOnly: true,),
+                inputTextField(lablel: "Address:", content: location["street"],readOnly: readOnly,),
                 SizedBox(height: 20,),
-                inputTextField(lablel: "Radius:", content: location["radius"],readOnly: true,),
+                inputTextField(lablel: "Radius:", content: location["radius"],readOnly: readOnly,),
                 SizedBox(height: 20,),
-                iconButton(text: "Edit Location", icon: Icons.settings, type: btnType.Primary,width: 320, height: 50,fontSize: 14,),
+                iconButton(text: "Edit Location", icon: Icons.settings, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,),
                 SizedBox(height: 10,),
             ],
           );

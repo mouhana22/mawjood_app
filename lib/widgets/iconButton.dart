@@ -12,9 +12,10 @@ class iconButton extends StatelessWidget {
     required this.text,
     required this.icon, 
     required this.type,
+    this.onPressed,
     this.height = 34,
     this.width = 137.5,
-    this.fontSize = 10
+    this.fontSize = 14
   });
   final double width;
   final double height;
@@ -22,6 +23,9 @@ class iconButton extends StatelessWidget {
   final double fontSize;
   final IconData icon;
   final btnType type;
+  final VoidCallback? onPressed;
+
+  
   @override
   Widget build(BuildContext context) {
     var textColor;
