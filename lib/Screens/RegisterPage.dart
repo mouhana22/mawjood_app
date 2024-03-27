@@ -89,7 +89,7 @@ class RegisterPage extends StatelessWidget {
             text: 'Register',
             type: btnType.Primary,
             height: 50,
-            width: double.infinity, 
+            width: double.infinity, onPressed: () {  }, 
           ),
           SizedBox(height: 16.0),
           Row(

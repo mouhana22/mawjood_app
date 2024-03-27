@@ -12,7 +12,7 @@ class button extends StatelessWidget {
     required this.text, 
     required this.type,
     this.height = 34,
-    this.width = 137.5
+    this.width = 137.5, required Null Function() onPressed
   });
   final double width;
   final double height;

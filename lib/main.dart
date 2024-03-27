@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mawjood_app/Screens/CheckIn.dart';
 import 'package:mawjood_app/Screens/RegisterPage.dart';
-import './cardsWidgets/employeeListCard.dart';
-import './cardsWidgets/employeeRequestCard.dart';
-import './cardsWidgets/employeeAttendanceCard.dart';
-import './cardsWidgets/locationCard.dart';
+import 'package:mawjood_app/Screens/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,12 +14,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
-        appBar: AppBar(title: const Text('testing')),
-        body:  RegisterPage(),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+      routes: {
+        '/CheckIn': (context) => CheckIn(),
+      },
     );
   }
-
 }
