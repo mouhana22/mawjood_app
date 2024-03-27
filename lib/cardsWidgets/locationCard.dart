@@ -39,6 +39,7 @@ class _locationCardState extends State<locationCard> {
   @override
   Widget build(BuildContext context) {
     fetchLocations();
+    
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         itemCount: _locations.length,

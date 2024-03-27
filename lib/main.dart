@@ -16,11 +16,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mawjood',
-      home: Scaffold(
-        backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
-        appBar: AppBar(title: const Text('testing')),
-        body: const locationCard(),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+      routes: {
+        '/CheckIn': (context) => CheckIn(),
+      },
     );
   }
 }
