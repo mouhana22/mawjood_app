@@ -5,17 +5,17 @@
 import 'package:flutter/material.dart';
 
 
-class cardWidget extends StatefulWidget {
-  const cardWidget({super.key, required this.cardTitle, required this.cardBody});
+class CardWidget extends StatefulWidget {
+  const CardWidget({super.key, required this.cardTitle, required this.cardBody});
 
   final String cardTitle;
   final List<Widget> cardBody;
 
   @override
-  State<cardWidget> createState() => _cardWidgetState();
+  State<CardWidget> createState() => _CardWidgetState();
 }
 
-class _cardWidgetState extends State<cardWidget> {
+class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {

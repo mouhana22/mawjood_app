@@ -3,8 +3,8 @@
 
 import 'package:flutter/material.dart';
 
-class inputTextField extends StatefulWidget {
-  const inputTextField({super.key, this.lablel = "", this.content = "", this.readOnly = false,  this.width = 320, this.height = 40});
+class InputTextField extends StatefulWidget {
+  const InputTextField({super.key, this.lablel = "", this.content = "", this.readOnly = false,  this.width = 320, this.height = 40});
   final double width;
   final double height;
   final String lablel;
@@ -12,10 +12,10 @@ class inputTextField extends StatefulWidget {
   final bool readOnly;
 
   @override
-  State<inputTextField> createState() => __inputTextFieldStateState();
+  State<InputTextField> createState() => __inputTextFieldStateState();
 }
 
-class __inputTextFieldStateState extends State<inputTextField> {
+class __inputTextFieldStateState extends State<InputTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -32,7 +32,7 @@ class __inputTextFieldStateState extends State<inputTextField> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          contentPadding: EdgeInsets.fromLTRB(0, 7, 0, 10),
+          contentPadding: EdgeInsets.fromLTRB(20, 7, 20, 10),
         ),
       ),
     );

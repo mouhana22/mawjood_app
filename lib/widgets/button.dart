@@ -6,8 +6,8 @@ import 'btnTypes.dart';
 
 
 
-class button extends StatelessWidget {
-  const button({
+class Button extends StatelessWidget {
+  const Button({
     super.key,
     required this.text, 
     required this.type,

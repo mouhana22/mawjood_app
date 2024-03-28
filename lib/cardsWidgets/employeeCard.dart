@@ -31,13 +31,13 @@ class _EmployeeCardState extends State<EmployeeCard> {
         itemCount: widget.employees.length,
         itemBuilder: (_, index) {
           final employee = widget.employees[index];
-          return cardWidget(
+          return CardWidget(
             cardTitle: employee["name"],
             cardBody: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  imageWidget(avatarURL: employee["avatar"]),
+                  ImageWidget(avatarURL: employee["avatar"]),
                   const SizedBox(
                     width: 20,
                   ),
@@ -45,10 +45,10 @@ class _EmployeeCardState extends State<EmployeeCard> {
                     children: [
                       for (var field in widget.infoRow) ...[
                         if (field == "status") ...[
-                          infoField(
+                          InfoField(
                               data: (employee[field] ? "Active" : "Inactive")),
                         ] else ...[
-                          infoField(data: employee[field])
+                          InfoField(data: employee[field])
                         ],
                         if (field != widget.infoRow.last)
                           const SizedBox(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mawjood_app/cardsWidgets/employeeListCard.dart';
 
 class EmployeeList extends StatefulWidget {
   const EmployeeList({super.key});
@@ -11,7 +12,9 @@ class _EmployeeListState extends State<EmployeeList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("this is Employee List Page"),
+      backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
+      appBar: AppBar(title: const Text('Employees List')),
+      body: const EmployeeListCard(),
     );
   }
 }

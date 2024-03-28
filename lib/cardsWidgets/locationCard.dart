@@ -12,14 +12,14 @@ import '../widgets/iconButton.dart';
 import '../widgets/btnTypes.dart';
 
 
-class locationCard extends StatefulWidget {
-  const locationCard({super.key});
+class LocationCard extends StatefulWidget {
+  const LocationCard({super.key});
 
   @override
-  State<locationCard> createState() => _locationCardState();
+  State<LocationCard> createState() => _LocationCardState();
 }
 
-class _locationCardState extends State<locationCard> {
+class _LocationCardState extends State<LocationCard> {
 
   List<dynamic> _locations = [];
   void fetchLocations() async{
@@ -39,24 +39,28 @@ class _locationCardState extends State<locationCard> {
   @override
   Widget build(BuildContext context) {
     fetchLocations();
-    
+
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         itemCount: _locations.length,
         itemBuilder: (_, index) {
           final location = _locations[index];
-          return cardWidget(
+          return CardWidget(
             cardTitle: location["city"],
             cardBody: [
-                mapWidget(),
+                MapWidget(),
                 SizedBox(height: 20,),
-                inputTextField(lablel: "name:", content: location["name"],readOnly: readOnly,),
+                InputTextField(lablel: "name:", content: location["name"],readOnly: readOnly,),
                 SizedBox(height: 20,),
-                inputTextField(lablel: "Address:", content: location["street"],readOnly: readOnly,),
+                InputTextField(lablel: "Address:", content: location["street"],readOnly: readOnly,),
                 SizedBox(height: 20,),
-                inputTextField(lablel: "Radius:", content: location["radius"],readOnly: readOnly,),
+                InputTextField(lablel: "Radius:", content: location["radius"],readOnly: readOnly,),
                 SizedBox(height: 20,),
-                iconButton(text: "Edit Location", icon: Icons.settings, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,),
+                if(readOnly)...[
+                  CustomIconButton(text: "Edit Location", icon: Icons.settings, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,)
+                ]else...[
+                  CustomIconButton(text: "Save Changes", icon: Icons.check, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,)
+                ],
                 SizedBox(height: 10,),
             ],
           );

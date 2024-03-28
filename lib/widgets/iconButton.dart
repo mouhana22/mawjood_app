@@ -6,8 +6,8 @@ import 'btnTypes.dart';
 
 
 
-class iconButton extends StatelessWidget {
-  const iconButton({
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton({
     super.key,
     required this.text,
     required this.icon, 
@@ -49,7 +49,7 @@ class iconButton extends StatelessWidget {
               backgroundColor = Color.fromRGBO(238, 242, 255, 1);
           }
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: onPressed,
       label: Text(text, style:TextStyle(color: textColor, fontSize: fontSize),),
       icon:  Icon(icon, color: iconColor,),
       style:  ElevatedButton.styleFrom(

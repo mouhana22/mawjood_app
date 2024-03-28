@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           SizedBox(height: 30), // Adjust the spacing as needed
           // Use your avatar widget here
-          imageWidget(
+          ImageWidget(
             avatarURL:
                 'https://i.ibb.co/VDNmZ8G/logo-2.png', // Provide the URL of the image
             width: 70,
@@ -35,12 +35,12 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                iconButton(
+                CustomIconButton(
                   text: "Register",
                   icon: Icons.login,
                   type: btnType.Secondary,
                 ),
-                iconButton(
+                CustomIconButton(
                   text: "Manage Account",
                   icon: Icons.settings,
                   type: btnType.Secondary,
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 50.0),
-                      child: button(
+                      child: Button(
                         text: "Check-In",
                         type: btnType.Primary,
                         onPressed: () {

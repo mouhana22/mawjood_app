@@ -15,7 +15,7 @@ class CheckIn extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Spacer(),
-              imageWidget(
+              ImageWidget(
                 avatarURL:
                     'https://i.ibb.co/94RhRtG/logo.png', //  the URL of the image
                 width: 70,
@@ -33,7 +33,7 @@ class CheckIn extends StatelessWidget {
               Spacer(),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: iconButton(
+                child: CustomIconButton(
                   text: "Check-Out",
                   icon: Icons.logout,
                   type: btnType.Red,
