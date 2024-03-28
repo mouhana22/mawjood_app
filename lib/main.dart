@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mawjood_app/Screens/CheckIn.dart';
-import 'package:mawjood_app/Screens/CheckOut.dart';
-import 'package:mawjood_app/Screens/RegisterPage.dart';
 import 'package:mawjood_app/Screens/home_page.dart';
-import 'package:mawjood_app/Screens/adminScreens/employeeAttendance.dart';
-import 'package:mawjood_app/Screens/adminScreens/locations.dart';
 
 void main() {
   runApp(const MyApp());

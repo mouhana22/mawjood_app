@@ -1,7 +1,9 @@
+// Mohammed ALGhamdi
+// Mohalatq88@gmail.com
+
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/Screens/CheckIn.dart';
 import 'package:mawjood_app/screens/Unrecognized.dart';
-import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/screens/RegisterPage.dart'; // Import RegisterPage
 import 'package:mawjood_app/screens/Login.dart';
 import 'package:mawjood_app/widgets/imageWidget.dart'; // Import LoginPage

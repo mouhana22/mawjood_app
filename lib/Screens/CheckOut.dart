@@ -1,6 +1,7 @@
+// Mohammed ALGhamdi
+// Mohalatq88@gmail.com
+
 import 'package:flutter/material.dart';
-import 'package:mawjood_app/widgets/btnTypes.dart';
-import 'package:mawjood_app/widgets/iconButton.dart';
 import 'package:mawjood_app/widgets/imageWidget.dart';
 import 'package:mawjood_app/widgets/statusBox.dart';
 
