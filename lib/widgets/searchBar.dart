@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
-void main() => runApp(const SearchBarApp());
 
 class SearchBarApp extends StatefulWidget {
   const SearchBarApp({super.key});
@@ -11,7 +8,7 @@ class SearchBarApp extends StatefulWidget {
 }
 
 class _SearchBarAppState extends State<SearchBarApp> {
-  var employees = List.generate(50, (index) => 'item $index');
+  var employees = [];
   var items = [];
   final TextEditingController SearchController = TextEditingController();
 
@@ -48,8 +45,7 @@ class _SearchBarAppState extends State<SearchBarApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         body: Center(
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -87,7 +83,6 @@ class _SearchBarAppState extends State<SearchBarApp> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
