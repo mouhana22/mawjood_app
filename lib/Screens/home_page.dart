@@ -1,19 +1,17 @@
+// Mohammed ALGhamdi
+// Mohalatq88@gmail.com
+
 import 'package:flutter/material.dart';
-import 'package:mawjood_app/widgets/btnTypes.dart';
-import 'package:mawjood_app/widgets/button.dart'; // Import your button widget
-import 'package:mawjood_app/widgets/iconButton.dart';
-import 'package:mawjood_app/widgets/imageWidget.dart'; // Import your avatar widget
+import 'package:mawjood_app/Screens/CheckIn.dart';
+import 'package:mawjood_app/screens/Unrecognized.dart';
+import 'package:mawjood_app/screens/RegisterPage.dart'; // Import RegisterPage
+import 'package:mawjood_app/screens/Login.dart';
+import 'package:mawjood_app/widgets/imageWidget.dart'; // Import LoginPage
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key});
+class HomePage extends StatelessWidget {
+  final bool hasAccount; // Flag to check if the user has an account
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  // Assuming you have a variable to track whether the user has an account or not
-  bool hasAccount = true; // Change this to true if the user has an account
+  const HomePage({Key? key, required this.hasAccount}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +19,9 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Color.fromARGB(99, 67, 69, 167),
       body: Column(
         children: [
-          SizedBox(height: 30), // Adjust the spacing as needed
-          // Use your avatar widget here
+          SizedBox(height: 30),
           ImageWidget(
-            avatarURL:
-                'https://i.ibb.co/VDNmZ8G/logo-2.png', // Provide the URL of the image
+            avatarURL: 'https://i.ibb.co/VDNmZ8G/logo-2.png',
             width: 70,
             height: 70,
           ),
@@ -35,15 +31,33 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomIconButton(
-                  text: "Register",
-                  icon: Icons.login,
-                  type: btnType.Secondary,
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // Navigate to RegisterPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                    );
+                  },
+                  icon: Icon(Icons.login),
+                  label: Text(
+                    'Register',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
-                CustomIconButton(
-                  text: "Manage Account",
-                  icon: Icons.settings,
-                  type: btnType.Secondary,
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // Navigate to LoginPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Login()),
+                    );
+                  },
+                  icon: Icon(Icons.settings),
+                  label: Text(
+                    'Manage Account',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
               ],
             ),
@@ -66,16 +80,31 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 50.0),
-                      child: Button(
-                        text: "Check-In",
-                        type: btnType.Primary,
+                      child: ElevatedButton(
                         onPressed: () {
                           // Check if the user has an account
                           if (hasAccount) {
                             // Navigate to CheckInScreen
-                            Navigator.pushNamed(context, '/CheckIn');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CheckIn()),
+                            );
+                          } else {
+                            // Navigate to UnrecognizedScreen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Unrecognized()),
+                            );
                           }
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Color.fromRGBO(55, 48, 163, 1), // button color
+                          foregroundColor: Colors.white, //  text color
+                        ),
+                        child: Text("Check-in"),
                       ),
                     ),
                   ],
