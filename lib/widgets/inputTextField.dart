@@ -3,20 +3,30 @@
 
 import 'package:flutter/material.dart';
 
+
 class InputTextField extends StatefulWidget {
-  const InputTextField({super.key, this.lablel = "", this.hintText = "", this.content = "", this.readOnly = false,  this.width = 320, this.height = 40});
+  const InputTextField({
+    super.key,
+    this.label = "",
+    this.content = "",
+    this.readOnly = false,
+    this.width = 320,
+    this.height = 40,
+    this.hintText = "", 
+  });
+
   final double width;
   final double height;
-  final String lablel;
-  final String hintText;
-  final String content; 
+  final String label;
+  final String content;
   final bool readOnly;
+  final String hintText; 
 
   @override
-  State<InputTextField> createState() => __inputTextFieldStateState();
+  State<InputTextField> createState() => _InputTextFieldState();
 }
 
-class __inputTextFieldStateState extends State<InputTextField> {
+class _InputTextFieldState extends State<InputTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -27,7 +37,8 @@ class __inputTextFieldStateState extends State<InputTextField> {
         controller: TextEditingController(text: widget.content),
         textAlign: TextAlign.center,
         decoration: InputDecoration(
-          labelText: widget.lablel,
+          labelText: widget.label,
+          hintText: widget.hintText, 
           fillColor: Color.fromRGBO(238, 242, 255, 1),
           filled: true,
           border: OutlineInputBorder(

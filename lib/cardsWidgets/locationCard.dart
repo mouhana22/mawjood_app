@@ -50,11 +50,11 @@ class _LocationCardState extends State<LocationCard> {
             cardBody: [
                 MapWidget(),
                 SizedBox(height: 20,),
-                InputTextField(lablel: "name:", content: location["name"],readOnly: readOnly,),
+                InputTextField(label: "name:", content: location["name"],readOnly: readOnly,),
                 SizedBox(height: 20,),
-                InputTextField(lablel: "Address:", content: location["street"],readOnly: readOnly,),
+                InputTextField(label: "Address:", content: location["street"],readOnly: readOnly,),
                 SizedBox(height: 20,),
-                InputTextField(lablel: "Radius:", content: location["radius"],readOnly: readOnly,),
+                InputTextField(label: "Radius:", content: location["radius"],readOnly: readOnly,),
                 SizedBox(height: 20,),
                 if(readOnly)...[
                   CustomIconButton(text: "Edit Location", icon: Icons.settings, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,)
