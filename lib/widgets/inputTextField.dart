@@ -4,10 +4,11 @@
 import 'package:flutter/material.dart';
 
 class InputTextField extends StatefulWidget {
-  const InputTextField({super.key, this.lablel = "", this.content = "", this.readOnly = false,  this.width = 320, this.height = 40});
+  const InputTextField({super.key, this.lablel = "", this.hintText = "", this.content = "", this.readOnly = false,  this.width = 320, this.height = 40});
   final double width;
   final double height;
   final String lablel;
+  final String hintText;
   final String content; 
   final bool readOnly;
 

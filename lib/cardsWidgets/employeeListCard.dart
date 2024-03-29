@@ -38,11 +38,11 @@ class _EmployeeListCardState extends State<EmployeeListCard> {
 
   statusButtons(employee) {
     return employee["status"]
-        ? const CustomIconButton(text: "Deactivate Employee", icon: Icons.block_outlined, type: btnType.Red,)
-        : const CustomIconButton(text: "Activate Employee", icon: Icons.beenhere_outlined, type: btnType.Green,);
+        ? const CustomIconButton(text: "Deactivate Employee", icon: Icons.block_outlined, type: btnType.Red, fontSize: 10)
+        : const CustomIconButton(text: "Activate Employee", icon: Icons.beenhere_outlined, type: btnType.Green, fontSize: 10,);
   }
 
   deleteButton(employee) {
-    return const CustomIconButton(text: "Delete Employee", icon: Icons.delete_outline, type: btnType.Red,);
+    return const CustomIconButton(text: "Delete Employee", icon: Icons.delete_outline, type: btnType.Red, fontSize: 10);
   }
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class BottomNavigationBarExample extends StatefulWidget {
-  const BottomNavigationBarExample({super.key});
+class NavBar extends StatefulWidget {
+  const NavBar({super.key});
 
   @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
+  State<NavBar> createState() =>
+      _NavBarState();
 }
 
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
+class _NavBarState
+    extends State<NavBar> {
   
   int _selectedIndex = 0;
 
@@ -21,8 +21,7 @@ class _BottomNavigationBarExampleState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
+    return BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
@@ -59,7 +58,6 @@ class _BottomNavigationBarExampleState
 
         showUnselectedLabels: true,
         onTap: _onItemTapped,
-      ),
-    );
+      );
   }
 }

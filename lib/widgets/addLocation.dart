@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/iconButton.dart';
-import 'package:mawjood_app/widgets/mapWidget.dart';
 
-class addLocation extends StatelessWidget {
+class AddLocation extends StatelessWidget {
+  const AddLocation({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold (
-      body: Center(
+    return const Center(
         child: CustomIconButton(
           width: 200,
           text: 'Add New Location',
@@ -15,6 +15,6 @@ class addLocation extends StatelessWidget {
           type: btnType.Primary,
           //onPressed: (),
         ),
-    ));
+    );
   }
 }
