@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mawjood_app/Screens/CheckIn.dart';
 import 'package:mawjood_app/screens/Unrecognized.dart';
 import 'package:mawjood_app/screens/RegisterPage.dart'; // Import RegisterPage
-import 'package:mawjood_app/screens/Login.dart';
+import 'package:mawjood_app/Screens/login.dart';
 import 'package:mawjood_app/widgets/imageWidget.dart'; // Import LoginPage
 
 class HomePage extends StatelessWidget {
@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                     // Navigate to LoginPage
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Login()),
+                      MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
                   icon: Icon(Icons.settings),
