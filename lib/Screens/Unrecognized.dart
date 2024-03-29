@@ -16,7 +16,7 @@ class Unrecognized extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              imageWidget(
+              ImageWidget(
                 avatarURL:
                     'https://i.ibb.co/94RhRtG/logo.png', //  the URL of the image
                 width: 50,

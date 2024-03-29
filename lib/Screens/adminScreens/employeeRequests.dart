@@ -14,7 +14,7 @@ class _EmployeeRequestsState extends State<EmployeeRequests> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
       appBar: AppBar(title: const Text('Employees Requests')),
-      body: const employeeRequestCard(),
+      body: const EmployeeRequestCard(),
     );
   }
 }

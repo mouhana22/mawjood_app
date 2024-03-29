@@ -14,7 +14,7 @@ class _LocationsState extends State<Locations> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
       appBar: AppBar(title: const Text('Locations')),
-      body: const locationCard(),
+      body: const LocationCard(),
     );
   }
 }

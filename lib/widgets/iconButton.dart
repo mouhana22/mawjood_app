@@ -6,15 +6,16 @@ import 'btnTypes.dart';
 
 
 
-class iconButton extends StatelessWidget {
-  const iconButton({
+class CustomIconButton extends StatelessWidget {
+  const CustomIconButton({
     super.key,
     required this.text,
     required this.icon, 
     required this.type,
+    this.onPressed,
     this.height = 34,
     this.width = 137.5,
-    this.fontSize = 10
+    this.fontSize = 14
   });
   final double width;
   final double height;
@@ -22,6 +23,9 @@ class iconButton extends StatelessWidget {
   final double fontSize;
   final IconData icon;
   final btnType type;
+  final VoidCallback? onPressed;
+
+  
   @override
   Widget build(BuildContext context) {
     var textColor;
@@ -45,7 +49,7 @@ class iconButton extends StatelessWidget {
               backgroundColor = Color.fromRGBO(238, 242, 255, 1);
           }
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: onPressed,
       label: Text(text, style:TextStyle(color: textColor, fontSize: fontSize),),
       icon:  Icon(icon, color: iconColor,),
       style:  ElevatedButton.styleFrom(

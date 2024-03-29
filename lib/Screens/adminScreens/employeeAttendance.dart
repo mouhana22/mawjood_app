@@ -14,7 +14,7 @@ class _EmployeeAttendanceState extends State<EmployeeAttendance> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
       appBar: AppBar(title: const Text('Employees Attendance')),
-      body: const employeeAttendanceCard(),
+      body: const EmployeeAttendanceCard(),
     );
   }
 }

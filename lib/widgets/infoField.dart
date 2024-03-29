@@ -4,8 +4,8 @@
 
 import 'package:flutter/material.dart';
 
-class infoField extends StatelessWidget {
-  const infoField({
+class InfoField extends StatelessWidget {
+  const InfoField({
     super.key,
     required this.data,
     this.height = 25,

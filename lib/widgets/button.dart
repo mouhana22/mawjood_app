@@ -6,17 +6,20 @@ import 'btnTypes.dart';
 
 
 
-class button extends StatelessWidget {
-  const button({
+class Button extends StatelessWidget {
+  const Button({
     super.key,
     required this.text, 
     required this.type,
     this.height = 34,
-    this.width = 137.5, required Null Function() onPressed
+    this.width = 137.5,
+    this.fontSize = 14, 
+    required Null Function() onPressed
   });
   final double width;
   final double height;
   final String text;
+  final double fontSize;
   final btnType type;
   @override
   Widget build(BuildContext context) {

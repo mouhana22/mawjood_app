@@ -66,7 +66,7 @@ class RegisterPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.0),
-          iconButton( //  icon button for scanning 
+          CustomIconButton( //  icon button for scanning 
             text: 'Scan',
             icon: Icons.camera_alt,
             type: btnType.Secondary, 
@@ -85,7 +85,7 @@ class RegisterPage extends StatelessWidget {
               Text('I agree to the terms')
             ],
           ),
-          button(
+          Button(
             text: 'Register',
             type: btnType.Primary,
             height: 50,

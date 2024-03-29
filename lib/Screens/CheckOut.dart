@@ -15,7 +15,7 @@ class CheckOut extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              imageWidget(
+              ImageWidget(
                 avatarURL:
                     'https://i.ibb.co/94RhRtG/logo.png', //  the URL of the image
                 width: 50,
@@ -25,7 +25,7 @@ class CheckOut extends StatelessWidget {
               StatusBox(
                 icon: Icons.check_circle_outline,
                 iconColor: Colors.black,
-                title: 'Successfully Checked in',
+                title: 'Successfully Checked Out',
                 textColor: Color.fromRGBO(30, 27, 75, 1),
                 date: 'Date: x/x/xxxx',
                 time: 'Time: x:xx:xx',

@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(height: 30),
-          imageWidget(
+          ImageWidget(
             avatarURL: 'https://i.ibb.co/VDNmZ8G/logo-2.png',
             width: 70,
             height: 70,

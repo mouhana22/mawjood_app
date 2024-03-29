@@ -10,14 +10,14 @@ import '../widgets/iconButton.dart';
 import '../widgets/btnTypes.dart';
 
 
-class employeeRequestCard extends StatefulWidget {
-  const employeeRequestCard({super.key});
+class EmployeeRequestCard extends StatefulWidget {
+  const EmployeeRequestCard({super.key});
 
   @override
-  State<employeeRequestCard> createState() => _employeeRequestCardState();
+  State<EmployeeRequestCard> createState() => _EmployeeRequestCardState();
 }
 
-class _employeeRequestCardState extends State<employeeRequestCard> {
+class _EmployeeRequestCardState extends State<EmployeeRequestCard> {
 
   List<dynamic> _employees = [];
   void fetchEmployees() async{
@@ -37,10 +37,10 @@ class _employeeRequestCardState extends State<employeeRequestCard> {
 
 
   acceptButton(employee) {
-    return const iconButton(text: "Accept", icon: Icons.check, type: btnType.Green,);
+    return const CustomIconButton(text: "Accept", icon: Icons.check, type: btnType.Green,);
   }
 
   rejectButton(employee) {
-    return const iconButton(text: "Reject", icon: Icons.close, type: btnType.Red,);
+    return const CustomIconButton(text: "Reject", icon: Icons.close, type: btnType.Red,);
   }
 }

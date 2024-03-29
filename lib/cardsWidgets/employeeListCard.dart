@@ -10,14 +10,14 @@ import '../widgets/iconButton.dart';
 import '../widgets/btnTypes.dart';
 
 
-class employeeListCard extends StatefulWidget {
-  const employeeListCard({super.key});
+class EmployeeListCard extends StatefulWidget {
+  const EmployeeListCard({super.key});
 
   @override
-  State<employeeListCard> createState() => _employeeListCardState();
+  State<EmployeeListCard> createState() => _EmployeeListCardState();
 }
 
-class _employeeListCardState extends State<employeeListCard> {
+class _EmployeeListCardState extends State<EmployeeListCard> {
 
   List<dynamic> _employees = [];
   void fetchEmployees() async{
@@ -38,11 +38,11 @@ class _employeeListCardState extends State<employeeListCard> {
 
   statusButtons(employee) {
     return employee["status"]
-        ? const iconButton(text: "Deactivate Employee", icon: Icons.block_outlined, type: btnType.Red,)
-        : const iconButton(text: "Activate Employee", icon: Icons.beenhere_outlined, type: btnType.Green,);
+        ? const CustomIconButton(text: "Deactivate Employee", icon: Icons.block_outlined, type: btnType.Red,)
+        : const CustomIconButton(text: "Activate Employee", icon: Icons.beenhere_outlined, type: btnType.Green,);
   }
 
   deleteButton(employee) {
-    return const iconButton(text: "Delete Employee", icon: Icons.delete_outline, type: btnType.Red,);
+    return const CustomIconButton(text: "Delete Employee", icon: Icons.delete_outline, type: btnType.Red,);
   }
 }

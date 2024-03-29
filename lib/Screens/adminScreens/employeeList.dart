@@ -14,7 +14,7 @@ class _EmployeeListState extends State<EmployeeList> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
       appBar: AppBar(title: const Text('Employees List')),
-      body: const employeeListCard(),
+      body: const EmployeeListCard(),
     );
   }
 }
