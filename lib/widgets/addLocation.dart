@@ -7,14 +7,12 @@ class AddLocation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-        child: CustomIconButton(
+    return  CustomIconButton(
           width: 200,
           text: 'Add New Location',
           icon: Icons.add,
           type: btnType.Primary,
-          //onPressed: (),
-        ),
+          onPressed: (){},
     );
   }
 }

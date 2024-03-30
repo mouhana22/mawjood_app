@@ -37,10 +37,10 @@ class _EmployeeRequestCardState extends State<EmployeeRequestCard> {
 
 
   acceptButton(employee) {
-    return const CustomIconButton(text: "Accept", icon: Icons.check, type: btnType.Green,);
+    return CustomIconButton(text: "Accept", icon: Icons.check, type: btnType.Green, onPressed: (){},);
   }
 
   rejectButton(employee) {
-    return const CustomIconButton(text: "Reject", icon: Icons.close, type: btnType.Red,);
+    return CustomIconButton(text: "Reject", icon: Icons.close, type: btnType.Red, onPressed: (){},);
   }
 }
