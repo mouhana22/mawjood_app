@@ -3,8 +3,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/Screens/RegisterPage.dart';
+import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/imageWidget.dart';
 import 'package:mawjood_app/widgets/statusBox.dart';
+import 'package:mawjood_app/widgets/Button.dart'; // Import Button widget
 
 class Unrecognized extends StatelessWidget {
   @override
@@ -29,37 +31,41 @@ class Unrecognized extends StatelessWidget {
                 title: 'Unrecognized',
                 textColor: Color.fromRGBO(242, 81, 101, 1),
                 color: Color.fromRGBO(239, 182, 198, 1),
-                date: null,
-                time: null,
+                showDateTime: false, // Do not show DateTimeWidget
               ),
               Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  // Navigate to the CheckOut screen when pressed
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterPage()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Color.fromRGBO(30, 27, 75, 1), // Set background color
-                  minimumSize: Size(137.5, 34), // Set button size
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(10), // Set border radius
+              Row(
+                // Wrap the Button and Text inside a Row
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Do not have an account?",
+                    style: TextStyle(
+                      color: Color.fromRGBO(0, 0, 0, 1), // Set text color
+                      fontSize: 13, // Set font size
+                    ),
                   ),
-                ),
-                child: Text(
-                  "Register", // Text for the button
-                  style: TextStyle(
-                    color: Color.fromRGBO(238, 242, 255, 1), // Set text color
-                    fontSize: 10,
+                  SizedBox(
+                      width: 8), // Add some space between the text and button
+                  Button(
+                    onPressed: () {
+                      // Navigate to the RegisterPage screen when pressed
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterPage()),
+                      );
+                    },
+                    text: "Register", // Text for the button
+                    type: btnType.Primary, // Set button type
+                    width: 100.5, // Set button width
+                    height: 34, // Set button height
+                    fontSize: 12, // Set font size
                   ),
-                ),
+                ],
               ),
               SizedBox(
-                  height: 20), // Add some space between the button and bottom
+                height: 20, // Add some space between the button and bottom
+              ),
             ],
           ),
         ),
