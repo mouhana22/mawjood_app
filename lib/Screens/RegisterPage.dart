@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// Assuming these custom widgets exist in your project based on provided info.
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/button.dart';
 
@@ -27,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
         password: passwordController.text.trim(),
       );
       
-      // If the user is successfully created, then store additional information in Firestore
+      // If the user is successfully created, then store additional information in Firestore in the collection userd
       FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
         'name': nameController.text.trim(),
         'phone': phoneController.text.trim(),
@@ -35,11 +34,16 @@ class _RegisterPageState extends State<RegisterPage> {
         'jobTitle': jobController.text.trim(),
       });
 
-      // Show a success message or navigate the user to another screen
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("User registered successfully")));
+      // Show a confirmation message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Registration request sent, You will be able to check-in when the admin accepts your request'),
+      ));
 
+      // Navigate back to the login screen after showing the message
+      Navigator.popUntil(context, ModalRoute.withName('/')); 
+      // or if there's have a named route for the login screen, use this ******8
+      // Navigator.pushReplacementNamed(context, '/loginRouteName');
     } catch (e) {
-      // Handle errors, like show an error message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to register user: $e")));
     }
   }
@@ -128,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              Icon(Icons.arrow_right, size: 24),
+              const Icon(Icons.arrow_right, size: 24),
             ],
           ),
         ],
