@@ -1,88 +1,59 @@
 import 'package:flutter/material.dart';
 
-class SearchBarApp extends StatefulWidget {
-  const SearchBarApp({super.key});
+class SearchBarWidget extends StatefulWidget {
+  final List<String> items; // List of items to be searched
+  final Function(String) onSearch; // Callback for handling search results
+
+  const SearchBarWidget({required this.items, required this.onSearch});
 
   @override
-  State<SearchBarApp> createState() => _SearchBarAppState();
+  _SearchBarWidgetState createState() => _SearchBarWidgetState();
 }
 
-class _SearchBarAppState extends State<SearchBarApp> {
-  var employees = [];
-  var items = [];
-  final TextEditingController SearchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    SearchController.addListener(queryListener);
-  } 
-
-  @override
-  void dispose() {
-    SearchController.removeListener(queryListener);
-    SearchController.dispose();
-    super.dispose();
-  }
-
-  void queryListener() {
-    search(SearchController.text);
-  }
-
-  void search(String query) {
-    if (query.isEmpty) {
-      setState(() {
-        items = employees;
-      });
-    } else {
-      setState(() {
-        items = employees
-            .where((e) => e.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      });
-    }
-  }
+class _SearchBarWidgetState extends State<SearchBarWidget> {
+  String _searchText = "";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Column(
-              children: <Widget>[
-                const SizedBox(
-                  height: 16.0,
-                ),
-                SearchBar(
-                  controller: SearchController,
-                  leading: const Icon(Icons.search),
-                  hintText: 'search...',
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      itemCount:
-                          items.isEmpty ? employees.length : items.length,
-                      itemBuilder: (context, index) {
-                        final item =
-                            items.isEmpty ? employees[index] : items[index];
+    List<String> filteredItems = widget.items
+        .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
+        .toList();
 
-                        return Card(
-                          child: Column(
-                            children: [
-                              Text('Name: $item'),
-                              const SizedBox(
-                                height: 8.0,),
-                              Text(item),
-                            ],
-                          ),
-                        );
-                      }),
-                )
-              ],
+    return Container(
+      child: Column(
+        children: [
+          SizedBox(
+            width: 300.0,
+            child: TextField(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                hintText: "Search...",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+              ),
+              onChanged: (text) {
+                setState(() {
+                  _searchText = text;
+                });
+                widget
+                    .onSearch(text); // Call onSearch callback with search text
+              },
             ),
           ),
-        ),
-      );
+          if (filteredItems.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredItems.length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(filteredItems[index]),
+                ),
+              ),
+            ),
+          if (filteredItems.isEmpty) const Text('No results found'),
+        ],
+      ),
+    );
   }
 }
+

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/cardsWidgets/employeeListCard.dart';
+import 'package:mawjood_app/widgets/navbar.dart';
 
 class EmployeeList extends StatefulWidget {
   const EmployeeList({super.key});
@@ -14,7 +15,14 @@ class _EmployeeListState extends State<EmployeeList> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
       appBar: AppBar(title: const Text('Employees List')),
-      body: const EmployeeListCard(),
+      body: const Column(
+        children: [
+          Expanded(
+            child: EmployeeListCard(),
+          ),
+        ],
+      ),
+      bottomNavigationBar: const NavBar(),
     );
   }
 }

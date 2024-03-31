@@ -1,12 +1,13 @@
 // Mohammed ALGhamdi
 // Mohalatq88@gmail.com
-
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/Screens/CheckIn.dart';
 import 'package:mawjood_app/screens/Unrecognized.dart';
 import 'package:mawjood_app/screens/RegisterPage.dart'; // Import RegisterPage
-import 'package:mawjood_app/screens/Login.dart';
+import 'package:mawjood_app/Screens/login.dart';
 import 'package:mawjood_app/widgets/imageWidget.dart'; // Import LoginPage
+import 'package:mawjood_app/widgets/iconButton.dart'; // Import CustomIconButton widget
+import 'package:mawjood_app/widgets/btnTypes.dart'; // Import btnType enum
 
 class HomePage extends StatelessWidget {
   final bool hasAccount; // Flag to check if the user has an account
@@ -31,7 +32,7 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton.icon(
+                CustomIconButton(
                   onPressed: () {
                     // Navigate to RegisterPage
                     Navigator.push(
@@ -39,13 +40,11 @@ class HomePage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => RegisterPage()),
                     );
                   },
-                  icon: Icon(Icons.login),
-                  label: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.black),
-                  ),
+                  icon: Icons.login,
+                  text: 'Register',
+                  type: btnType.Secondary,
                 ),
-                ElevatedButton.icon(
+                CustomIconButton(
                   onPressed: () {
                     // Navigate to LoginPage
                     Navigator.push(
@@ -53,11 +52,9 @@ class HomePage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
-                  icon: Icon(Icons.settings),
-                  label: Text(
-                    'Manage Account',
-                    style: TextStyle(color: Colors.black),
-                  ),
+                  icon: Icons.settings,
+                  text: 'Manage Account',
+                  type: btnType.Secondary,
                 ),
               ],
             ),
@@ -80,7 +77,7 @@ class HomePage extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 50.0),
-                      child: ElevatedButton(
+                      child: CustomIconButton(
                         onPressed: () {
                           // Check if the user has an account
                           if (hasAccount) {
@@ -99,12 +96,9 @@ class HomePage extends StatelessWidget {
                             );
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Color.fromRGBO(55, 48, 163, 1), // button color
-                          foregroundColor: Colors.white, //  text color
-                        ),
-                        child: Text("Check-in"),
+                        text: 'Check-in',
+                        icon: Icons.check,
+                        type: btnType.Primary,
                       ),
                     ),
                   ],

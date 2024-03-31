@@ -11,16 +11,17 @@ class Button extends StatelessWidget {
     super.key,
     required this.text, 
     required this.type,
+    this.onPressed,
     this.height = 34,
     this.width = 137.5,
-    this.fontSize = 14, 
-    required Null Function() onPressed
+    this.fontSize = 14,
   });
   final double width;
   final double height;
   final String text;
   final double fontSize;
   final btnType type;
+  final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
     var textColor;
@@ -39,8 +40,8 @@ class Button extends StatelessWidget {
               backgroundColor = Color.fromRGBO(238, 242, 255, 1);
           }
     return ElevatedButton(
-      onPressed: () {},
-      child:  Text(text, style:TextStyle(color: textColor, fontSize: 10),),
+      onPressed: onPressed,
+      child:  Text(text, style:TextStyle(color: textColor, fontSize: fontSize),),
       style:  ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           minimumSize: Size(width, height),

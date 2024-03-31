@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/iconButton.dart';
 
-class datePicker extends StatefulWidget {
-  const datePicker({super.key});
+class DatePicker extends StatefulWidget {
+  const DatePicker({super.key});
 
   @override
-  State<datePicker> createState() => _datePickerState();
+  State<DatePicker> createState() => _DatePickerState();
 }
 
-class _datePickerState extends State<datePicker> {
+class _DatePickerState extends State<DatePicker> {
   var today = (DateTime.now().year, DateTime.now().month, DateTime.now().day);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      padding: EdgeInsets.all(8.0),
+    return Container(
+      padding: const EdgeInsets.all(8.0),
       child: CustomIconButton(
         icon: Icons.date_range,
         text: today.toString(),
@@ -32,6 +31,6 @@ class _datePickerState extends State<datePicker> {
           }
         },
       ),
-    ));
+    );
   }
 }
