@@ -1,21 +1,51 @@
-//import all widgets/packages
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// Assuming these custom widgets exist in your project based on provided info.
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/button.dart';
-import 'package:mawjood_app/widgets/iconButton.dart';
 
 
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
 
-class RegisterPage extends StatelessWidget {
+class _RegisterPageState extends State<RegisterPage> {
+  // كنترولز للكتابخ
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController jobController = TextEditingController();
+
+  Future<void> registerUser() async {
+    try {
+      // Create a new user
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      
+      // If the user is successfully created, then store additional information in Firestore
+      FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+        'name': nameController.text.trim(),
+        'phone': phoneController.text.trim(),
+        'email': emailController.text.trim(),
+        'jobTitle': jobController.text.trim(),
+      });
+
+      // Show a success message or navigate the user to another screen
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("User registered successfully")));
+
+    } catch (e) {
+      // Handle errors, like show an error message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to register user: $e")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //كنترولز للكتابة
-    TextEditingController nameController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController jobController = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
@@ -42,7 +72,7 @@ class RegisterPage extends StatelessWidget {
           SizedBox(height: 8.0),
           TextFormField(
             controller: emailController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Email',
               hintText: 'Your email',
             ),
@@ -51,7 +81,7 @@ class RegisterPage extends StatelessWidget {
           SizedBox(height: 8.0),
           TextFormField(
             controller: passwordController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Password',
               hintText: 'Your password',
             ),
@@ -60,61 +90,49 @@ class RegisterPage extends StatelessWidget {
           SizedBox(height: 8.0),
           TextFormField(
             controller: jobController,
-            decoration: InputDecoration(
-              labelText: 'Job title',
+            decoration: const InputDecoration(
+              labelText: 'Job Title',
               hintText: 'Type role',
             ),
           ),
           SizedBox(height: 16.0),
-          CustomIconButton( //  icon button for scanning 
-            text: 'Scan',
-            icon: Icons.camera_alt,
-            type: btnType.Secondary, 
-            height: 50,
-            width: double.infinity, 
+          
+          TextButton(
+            child: Text('Scan'),
+            onPressed: () {
+              /***** * add Code for scanning later  *******/
+              },
           ),
           SizedBox(height: 16.0),
-          Row(
-            children: [
-              Checkbox(
-                value: false, 
-                onChanged: (bool? newValue) {
-                  // ****Add the state handling logic here later****
-                },
-              ),
-              Text('I agree to the terms')
-            ],
-          ),
           Button(
             text: 'Register',
             type: btnType.Primary,
             height: 50,
-            width: double.infinity, onPressed: () {  }, 
+            width: double.infinity,
+            onPressed: registerUser,
           ),
           SizedBox(height: 16.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Or register with check in'),
+              const Text('Or register with check in'),
               GestureDetector(
                 onTap: () {
-                  // ****Add the action here later****
+                  // *****Add the action here later*****
                 },
                 child: Text(
-                  'check in ',
+                  ' Check in ',
                   style: TextStyle(
-                    color: Theme.of(context).canvasColor, 
-                    decoration: TextDecoration.none,
+                    color: Theme.of(context).primaryColor, 
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),
-              Icon(Icons.arrow_right, size: 24) //  right arrow icon
+              Icon(Icons.arrow_right, size: 24),
             ],
           ),
-
         ],
       ),
     );
   }
 }
-
