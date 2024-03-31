@@ -1,15 +1,17 @@
 // Mohammed ALGhamdi
 // Mohalatq88@gmail.com
+
 import 'package:flutter/material.dart';
+import 'package:mawjood_app/widgets/DateTimeWidget.dart'; // Import DateTimeWidget
 
 class StatusBox extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final String title;
   final Color textColor;
-  final String? date; // Make date nullable
-  final String? time; // Make time nullable
-  final Color color; // New parameter for box color
+  final Color color;
+  final bool
+      showDateTime; // New parameter to indicate whether to show DateTimeWidget
 
   const StatusBox({
     Key? key,
@@ -17,9 +19,8 @@ class StatusBox extends StatelessWidget {
     required this.iconColor,
     required this.title,
     required this.textColor,
-    this.date, // Nullable date parameter
-    this.time, // Nullable time parameter
-    required this.color, // Added color parameter
+    required this.color,
+    this.showDateTime = true, // Default value to true
   }) : super(key: key);
 
   @override
@@ -27,7 +28,7 @@ class StatusBox extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(50),
       decoration: BoxDecoration(
-        color: color, // Use the provided color for the box
+        color: color,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -46,10 +47,8 @@ class StatusBox extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.0),
-          if (date != null) // Display date if it's not null
-            Text(date!),
-          if (time != null) // Display time if it's not null
-            Text(time!),
+          if (showDateTime) // Conditionally show DateTimeWidget
+            DateTimeWidget(), // Show DateTimeWidget if showDateTime is true
         ],
       ),
     );

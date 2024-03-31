@@ -16,21 +16,18 @@ class CheckOut extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               ImageWidget(
-                avatarURL:
-                    'https://i.ibb.co/94RhRtG/logo.png', //  the URL of the image
+                avatarURL: 'https://i.ibb.co/94RhRtG/logo.png',
                 width: 50,
                 height: 50,
               ),
               SizedBox(height: 200.0),
               StatusBox(
-                icon: Icons.check_circle_outline,
+                icon: Icons.logout,
                 iconColor: Colors.black,
                 title: 'Successfully Checked Out',
                 textColor: Color.fromRGBO(30, 27, 75, 1),
-                date: 'Date: x/x/xxxx',
-                time: 'Time: x:xx:xx',
-                color: Color.fromRGBO(
-                    203, 204, 242, 0.8), // Set the color of the box to blue
+                color: Color.fromRGBO(203, 204, 242, 0.8),
+                showDateTime: true, // Pass false to hide DateTimeWidget
               ),
               Spacer(),
             ],
