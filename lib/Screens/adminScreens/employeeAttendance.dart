@@ -12,17 +12,12 @@ class EmployeeAttendance extends StatefulWidget {
 class _EmployeeAttendanceState extends State<EmployeeAttendance> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
-      appBar: AppBar(title: const Text('Employees Attendance')),
-      body: const Column(
+    return const Column(
         children: [
           Expanded(
             child: EmployeeAttendanceCard(),
           ),
         ],
-      ),
-      bottomNavigationBar: const NavBar(),
-    );
+      );
   }
 }

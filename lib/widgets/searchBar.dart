@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SearchBarWidget extends StatefulWidget {
   final List<String> items; // List of items to be searched
-  final Function(String) onSearch; // Callback for handling search results
+  final Function(String) onSearch; 
 
   const SearchBarWidget({required this.items, required this.onSearch});
 

@@ -12,17 +12,13 @@ class EmployeeRequests extends StatefulWidget {
 class _EmployeeRequestsState extends State<EmployeeRequests> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
-      appBar: AppBar(title: const Text('Employees Requests')),
-      body: const Column(
+    return const Column(
         children: [
           Expanded(
             child: EmployeeRequestCard(),
           ),
         ],
-      ),
-      bottomNavigationBar: const NavBar(),
-    );
+      );
   }
 }
+//AppBar(title: const Text('Employees Requests')),

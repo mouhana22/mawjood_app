@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mawjood_app/Screens/adminScreens/employeeAttendance.dart';
-import 'package:mawjood_app/Screens/adminScreens/employeeList.dart';
-import 'package:mawjood_app/Screens/adminScreens/employeeRequests.dart';
-import 'package:mawjood_app/Screens/adminScreens/locations.dart';
 
 class NavBar extends StatefulWidget {
-  const NavBar({super.key});
-
+  final List <List<Widget>> screens;
+  const NavBar({super.key, required this.screens});
+  //List<Widget> get screen => screens;
   @override
   State<NavBar> createState() => _NavBarState();
 }
@@ -14,75 +11,55 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int selectedIndex = 0;
 
-  List<Widget> screens = const [
-    EmployeeAttendance(),
-    EmployeeList(),
-    EmployeeRequests(),
-    Locations()
-  ];
-  void route(index) {
-    switch (index) {
-      case 0:
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => screens[index]));
-        break;
-      case 1:
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => screens[index]));
-        break;
-      case 2:
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => screens[index]));
-        break;
-      case 3:
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => screens[index]));
-        break;
-      default:
-    }
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
   }
-
+  
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      onTap: (index) {
-        setState(() {
-          selectedIndex = index;
-          route(index);
-        });
-      },
-      currentIndex: selectedIndex,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outlined),
-          activeIcon: Icon(Icons.person),
-          label: 'Attendance',
+      return Scaffold(
+        backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
+        appBar: AppBar(
+          title: widget.screens[selectedIndex][1],
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.format_list_bulleted),
-          label: 'List',
+        body: Center(
+          child: widget.screens[selectedIndex][0],
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_add_outlined),
-          activeIcon: Icon(Icons.person_add),
-          label: 'Requests',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.place_outlined),
-          activeIcon: Icon(Icons.place),
-          label: 'Location',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.logout_outlined),
-          activeIcon: Icon(Icons.logout),
-          label: 'Logout',
-        ),
-      ],
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.indigo[800],
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.indigo[300],
-      showUnselectedLabels: true,
-    );
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outlined),
+              activeIcon: Icon(Icons.person),
+              label: 'Attendance',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted),
+              label: 'List',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_add_outlined),
+              activeIcon: Icon(Icons.person_add),
+              label: 'Requests',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.place_outlined),
+              activeIcon: Icon(Icons.place),
+              label: 'Location',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.logout_outlined),
+              activeIcon: Icon(Icons.logout),
+              label: 'Logout',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.indigo[800],
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.indigo[300],
+          showUnselectedLabels: true,
+          onTap: _onItemTapped,
+        ));
   }
 }
