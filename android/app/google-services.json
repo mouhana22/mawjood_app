@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "516743015485",
+    "project_id": "mawjood-application",
+    "storage_bucket": "mawjood-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516743015485:android:f8dcb1e3717816d5954e54",
+        "android_client_info": {
+          "package_name": "com.example.mawjood_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO7Tgn0UlC735XlyGpJrb2rEd8Xw5gAW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

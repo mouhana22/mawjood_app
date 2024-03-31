@@ -3,9 +3,16 @@ import 'package:mawjood_app/Screens/home_page.dart';
 import 'package:mawjood_app/Screens/adminScreens/employeeAttendance.dart';
 import 'package:mawjood_app/Screens/adminScreens/locations.dart';
 import 'package:mawjood_app/Screens/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+Future<void> main() async {
   runApp(const MyApp());
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
+
 }
 
 class MyApp extends StatelessWidget {
