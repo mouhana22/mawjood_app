@@ -14,7 +14,7 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: CustomIconButton(
         icon: Icons.date_range,
         text: today.toString(),
