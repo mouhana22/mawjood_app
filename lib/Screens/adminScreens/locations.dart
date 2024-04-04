@@ -15,16 +15,12 @@ class Locations extends StatefulWidget {
 class _LocationsState extends State<Locations> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
-      appBar: AppBar(title: const Text('Locations')),
-      body: const Column(
+    return const Column(
         children: [
           AddLocation(),
           Expanded(child: LocationCard(),),
         ],
-      ),
-      bottomNavigationBar: const NavBar(), 
-    );
+      );
   }
 }
+// appBar: AppBar(title: const Text('Locations')),

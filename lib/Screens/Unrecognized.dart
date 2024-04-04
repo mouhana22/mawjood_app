@@ -34,33 +34,28 @@ class Unrecognized extends StatelessWidget {
                 showDateTime: false, // Do not show DateTimeWidget
               ),
               Spacer(),
+              SizedBox(height: 16.0),
               Row(
-                // Wrap the Button and Text inside a Row
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Do not have an account?",
-                    style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 1), // Set text color
-                      fontSize: 13, // Set font size
-                    ),
-                  ),
-                  SizedBox(
-                      width: 8), // Add some space between the text and button
-                  Button(
-                    onPressed: () {
-                      // Navigate to the RegisterPage screen when pressed
+                  const Text('Do not have an account ? '),
+                  GestureDetector(
+                    onTap: () {
+                      // Navigate the user to the register page
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => RegisterPage()),
                       );
                     },
-                    text: "Register", // Text for the button
-                    type: btnType.Primary, // Set button type
-                    width: 100.5, // Set button width
-                    height: 34, // Set button height
-                    fontSize: 12, // Set font size
+                    child: Text(
+                      'Register',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
                   ),
+                  const Icon(Icons.arrow_right, size: 24),
                 ],
               ),
               SizedBox(
