@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/cardsWidgets/employeeListCard.dart';
-import 'package:mawjood_app/widgets/navbar.dart';
 
 class EmployeeList extends StatefulWidget {
   const EmployeeList({super.key});
@@ -21,4 +20,4 @@ class _EmployeeListState extends State<EmployeeList> {
       );
   }
 }
-//AppBar(title: const Text('Employees List'))
+// AppBar(title: const Text('Employees List'))

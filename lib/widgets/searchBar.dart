@@ -4,7 +4,7 @@ class SearchBarWidget extends StatefulWidget {
   final List<String> items; // List of items to be searched
   final Function(String) onSearch; 
 
-  const SearchBarWidget({required this.items, required this.onSearch});
+  const SearchBarWidget({super.key, required this.items, required this.onSearch});
 
   @override
   _SearchBarWidgetState createState() => _SearchBarWidgetState();
@@ -36,8 +36,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 setState(() {
                   _searchText = text;
                 });
-                widget
-                    .onSearch(text); // Call onSearch callback with search text
+                widget.onSearch(text); // Call onSearch callback with search text
               },
             ),
           ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/cardsWidgets/employeeAttendanceCard.dart';
-import 'package:mawjood_app/widgets/navbar.dart';
 
 class EmployeeAttendance extends StatefulWidget {
   const EmployeeAttendance({super.key});

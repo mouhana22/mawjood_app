@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NavBar extends StatefulWidget {
-  final List <List<Widget>> screens;
-  const NavBar({super.key, required this.screens});
-  //List<Widget> get screen => screens;
+  final List <Widget> screens;
+  final List <Widget> appBars;
+  const NavBar({super.key, required this.screens, required this.appBars});
   @override
   State<NavBar> createState() => _NavBarState();
 }
@@ -16,17 +16,18 @@ class _NavBarState extends State<NavBar> {
       selectedIndex = index;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
       return Scaffold(
-        backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
         appBar: AppBar(
-          title: widget.screens[selectedIndex][1],
+          title: widget.appBars[selectedIndex],
         ),
-        body: Center(
-          child: widget.screens[selectedIndex][0],
+        body: IndexedStack(
+          index: selectedIndex,
+          children: widget.screens,
         ),
+        backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
@@ -58,6 +59,7 @@ class _NavBarState extends State<NavBar> {
           backgroundColor: Colors.indigo[800],
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.indigo[300],
+          currentIndex: selectedIndex,
           showUnselectedLabels: true,
           onTap: _onItemTapped,
         ));

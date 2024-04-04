@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mawjood_app/cardsWidgets/locationCard.dart';
 import 'package:mawjood_app/widgets/addLocation.dart';
-import 'package:mawjood_app/widgets/navbar.dart';
 
 class Locations extends StatefulWidget {
   const Locations({super.key});
