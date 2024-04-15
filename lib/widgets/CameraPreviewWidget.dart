@@ -8,27 +8,34 @@ class CameraPreviewWidget extends StatefulWidget {
 
 class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   late CameraController _controller;
-  late Future<void> _initializeControllerFuture;
+  late Future<void> _initializeControllerFuture; // Remove nullable Future
 
   @override
   void initState() {
     super.initState();
+    // Initialize the camera controller and the future
+    _initializeCamera();
+  }
+
+  Future<void> _initializeCamera() async {
     // Obtain a list of the available cameras
-    availableCameras().then((cameras) {
-      // Get the first camera from the list
-      final firstCamera = cameras.first;
-      // Initialize the camera controller
-      _controller = CameraController(
-        firstCamera,
-        ResolutionPreset.medium,
-      );
-      // Initialize the controller future
-      _initializeControllerFuture = _controller.initialize();
-      // Update the state once the controller is initialized
-      if (mounted) {
-        setState(() {});
-      }
-    });
+    final cameras = await availableCameras();
+    // Find the front camera among the available cameras
+    final frontCamera = cameras.firstWhere(
+      (camera) => camera.lensDirection == CameraLensDirection.front,
+      orElse: () => cameras.first,
+    );
+    // Initialize the camera controller
+    _controller = CameraController(
+      frontCamera,
+      ResolutionPreset.medium,
+    );
+    // Initialize the controller future
+    _initializeControllerFuture = _controller.initialize();
+    // Update the state once the controller is initialized
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
