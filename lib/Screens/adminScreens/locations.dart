@@ -16,7 +16,8 @@ class _LocationsState extends State<Locations> {
   Widget build(BuildContext context) {
     return const Column(
         children: [
-          AddLocation(),
+          Padding(padding: EdgeInsets.all(8.0),
+          child: AddLocation()),
           Expanded(child: LocationCard(),),
         ],
       );
