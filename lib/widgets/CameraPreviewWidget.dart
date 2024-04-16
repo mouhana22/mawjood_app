@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 class CameraPreviewWidget extends StatefulWidget {
+  const CameraPreviewWidget({super.key});
+
   @override
   _CameraPreviewWidgetState createState() => _CameraPreviewWidgetState();
 }
@@ -50,7 +52,7 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
         if (snapshot.connectionState == ConnectionState.done) {
           // If the Future is complete, display the camera preview
           return Center(
-            child: Container(
+            child: SizedBox(
               height: 250,
               width: 250,
               child: CameraPreview(_controller),
@@ -58,7 +60,7 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
           );
         } else {
           // Otherwise, display a loading indicator
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );

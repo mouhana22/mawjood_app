@@ -28,9 +28,9 @@ class _CardWidgetState extends State<CardWidget> {
             child: ExpansionTile(
               shape: const Border(),
               childrenPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              iconColor: Color.fromRGBO(99, 102, 241, 1),
-              collapsedIconColor: Color.fromRGBO(99, 102, 241, 1),
-              title: Text(widget.cardTitle,style: TextStyle(color: Color.fromRGBO(99, 102, 241, 1)),),
+              iconColor: const Color.fromRGBO(99, 102, 241, 1),
+              collapsedIconColor: const Color.fromRGBO(99, 102, 241, 1),
+              title: Text(widget.cardTitle,style: const TextStyle(color: Color.fromRGBO(99, 102, 241, 1)),),
               children: widget.cardBody
               
             )

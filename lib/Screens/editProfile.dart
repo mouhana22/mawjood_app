@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class EditProfile extends StatefulWidget {
+  const EditProfile({super.key});
+
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
@@ -17,9 +19,9 @@ class _EditProfilePageState extends State<EditProfile> {
   late TextEditingController _emailController;
   late TextEditingController _jobTitleController;
  late TextEditingController _phoneController;
-  // Defining colors and styles
-  final Color primaryColor = Color(0xFF3730A3);
-  final TextStyle inputTextStyle = TextStyle(fontSize: 18, color: Colors.black87);
+  // Defining colors and styles for the page
+  final Color primaryColor = const Color(0xFF3730A3);
+  final TextStyle inputTextStyle = const TextStyle(fontSize: 18, color: Colors.black87);
   final TextStyle labelTextStyle = TextStyle(fontSize: 16, color: Colors.grey[600]);
 
   @override
@@ -65,20 +67,20 @@ class _EditProfilePageState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Profile", style: TextStyle(color: Colors.white)),
+        title: const Text("Edit Profile", style: TextStyle(color: Colors.white)),
          elevation: 0,
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: Icon(Icons.save, color: Colors.white),
+            icon: const Icon(Icons.save, color: Colors.white),
             onPressed: _isLoading ? null : _saveProfile,
           ),
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -126,7 +128,7 @@ class _EditProfilePageState extends State<EditProfile> {
          'phone': _phoneController.text, 
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile updated successfully!', style: TextStyle(color: Colors.white))));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile updated successfully!', style: TextStyle(color: Colors.white))));
       Navigator.pop(context);
     }
   }

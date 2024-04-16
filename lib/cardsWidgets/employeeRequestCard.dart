@@ -31,7 +31,7 @@ class _EmployeeRequestCardState extends State<EmployeeRequestCard> {
   Widget build(BuildContext context) {
     fetchEmployees();
 
-    return EmployeeCard(employees: _employees ,infoRow:["jobTitle","email","phone"],actionRow: [acceptButton,rejectButton]);
+    return EmployeeCard(employees: _employees ,infoRow:const ["jobTitle","email","phone"],actionRow: [acceptButton,rejectButton]);
   }
 
 

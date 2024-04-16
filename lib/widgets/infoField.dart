@@ -23,7 +23,7 @@ class InfoField extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(238, 242, 255, 1),
+          color: const Color.fromRGBO(238, 242, 255, 1),
           borderRadius: BorderRadius.circular(10)
         ),
         

@@ -22,33 +22,33 @@ class Button extends StatelessWidget {
   final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
-    var textColor;
-    var backgroundColor;
+    Color textColor;
+    Color backgroundColor;
     if (type == btnType.Primary) {
-      textColor = Color.fromRGBO(238, 242, 255, 1);
-      backgroundColor = Color.fromRGBO(30, 27, 75, 1);
+      textColor = const Color.fromRGBO(238, 242, 255, 1);
+      backgroundColor = const Color.fromRGBO(30, 27, 75, 1);
     } else if (type == btnType.Green) {
-      textColor = Color.fromRGBO(47, 216, 74, 1);
-      backgroundColor = Color.fromRGBO(208, 255, 215, 1);
+      textColor = const Color.fromRGBO(47, 216, 74, 1);
+      backgroundColor = const Color.fromRGBO(208, 255, 215, 1);
     } else if (type == btnType.Red) {
-      textColor = Color.fromRGBO(200, 59, 59, 1);
-      backgroundColor = Color.fromRGBO(255, 222, 222, 1);
+      textColor = const Color.fromRGBO(200, 59, 59, 1);
+      backgroundColor = const Color.fromRGBO(255, 222, 222, 1);
     } else {
-      textColor = Color.fromRGBO(30, 27, 75, 1);
-      backgroundColor = Color.fromRGBO(238, 242, 255, 1);
+      textColor = const Color.fromRGBO(30, 27, 75, 1);
+      backgroundColor = const Color.fromRGBO(238, 242, 255, 1);
     }
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(
-        text,
-        style: TextStyle(color: textColor, fontSize: fontSize),
-      ),
       style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
           minimumSize: Size(width, height),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           )),
+      child: Text(
+        text,
+        style: TextStyle(color: textColor, fontSize: fontSize),
+      ),
     );
   }
 }

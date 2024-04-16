@@ -39,12 +39,12 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
    checkInTime(employee) {
     final DateTime date = DateTime.parse(employee["checkIn"]);
     final String checkInMsg = "Checked-In At: ${DateFormat.jm().format(date)}";
-    return InfoField(data: checkInMsg, height: 34,width: 137.5,textColor: Color.fromRGBO(99, 102, 241, 1));
+    return InfoField(data: checkInMsg, height: 34,width: 137.5,textColor: const Color.fromRGBO(99, 102, 241, 1));
   }
 
   checkOutTime(employee) {
     final DateTime date = DateTime.parse(employee["checkOut"]);
     final String checkOutMsg = "Checked-Out At: ${DateFormat.jm().format(date)}";
-    return InfoField(data: checkOutMsg, height: 34,width: 137.5, textColor: Color.fromRGBO(99, 102, 241, 1),);
+    return InfoField(data: checkOutMsg, height: 34,width: 137.5, textColor: const Color.fromRGBO(99, 102, 241, 1),);
   }
 }

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateTimeWidget extends StatelessWidget {
+  const DateTimeWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('MM/dd/yyyy').format(DateTime.now());
@@ -14,12 +16,12 @@ class DateTimeWidget extends StatelessWidget {
       children: [
         Text(
           'Date: $formattedDate',
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           'Time: $formattedTime',
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
       ],
     );

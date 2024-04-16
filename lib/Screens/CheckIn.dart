@@ -9,22 +9,24 @@ import 'package:mawjood_app/widgets/imageWidget.dart';
 import 'package:mawjood_app/widgets/statusBox.dart';
 
 class CheckIn extends StatelessWidget {
+  const CheckIn({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(238, 242, 255, 1),
+      backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ImageWidget(
+              const ImageWidget(
                 avatarURL: 'https://i.ibb.co/94RhRtG/logo.png',
                 width: 50,
                 height: 50,
               ),
-              SizedBox(height: 200.0),
-              StatusBox(
+              const SizedBox(height: 200.0),
+              const StatusBox(
                 icon: Icons.check_circle_outline,
                 iconColor: Color.fromRGBO(140, 170, 52, 1),
                 title: 'Successfully Checked in',
@@ -32,15 +34,15 @@ class CheckIn extends StatelessWidget {
                 color: Color.fromRGBO(222, 231, 194, 1),
                 showDateTime: true, // Pass true to show DateTimeWidget
               ),
-              SizedBox(height: 16),
-              Spacer(),
+              const SizedBox(height: 16),
+              const Spacer(),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: CustomIconButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CheckOut()),
+                      MaterialPageRoute(builder: (context) => const CheckOut()),
                     );
                   },
                   icon: Icons.logout,
@@ -48,7 +50,7 @@ class CheckIn extends StatelessWidget {
                   type: btnType.Red,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),

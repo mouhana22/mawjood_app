@@ -11,12 +11,12 @@ import 'package:mawjood_app/widgets/btnTypes.dart'; // Import btnType enum
 class HomePage extends StatelessWidget {
   final bool hasAccount; // Flag to check if the user has an account
 
-  const HomePage({Key? key, required this.hasAccount}) : super(key: key);
+  const HomePage({super.key, required this.hasAccount});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(148, 92, 94, 233),
+      backgroundColor: const Color.fromARGB(148, 92, 94, 233),
       body: Stack(
         children: [
           Positioned(
@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
             child: Container(
               width: 470,
               height: 470,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color.fromARGB(96, 27, 25, 68),
               ),
@@ -33,16 +33,16 @@ class HomePage extends StatelessWidget {
           ),
           Column(
             children: [
-              SizedBox(height: 30),
-              ImageWidget(
+              const SizedBox(height: 30),
+              const ImageWidget(
                 avatarURL:
                     'https://i.ibb.co/0sM3NKG/logo-2-removebg-preview.png',
                 width: 70,
                 height: 70,
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RegisterPage()),
+                              builder: (context) => const RegisterPage()),
                         );
                       },
                       icon: Icons.login,
@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
                         );
                       },
                       icon: Icons.settings,
@@ -72,13 +72,13 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 120),
+              const SizedBox(height: 120),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   child: Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16),
@@ -96,13 +96,13 @@ class HomePage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CheckIn()),
+                                      builder: (context) => const CheckIn()),
                                 );
                               } else {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Unrecognized()),
+                                      builder: (context) => const Unrecognized()),
                                 );
                               }
                             },
@@ -118,7 +118,7 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          Positioned(
+          const Positioned(
             top: 230,
             left: 0,
             right: 0,

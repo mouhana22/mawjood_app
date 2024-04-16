@@ -48,20 +48,20 @@ class _LocationCardState extends State<LocationCard> {
           return CardWidget(
             cardTitle: location["city"],
             cardBody: [
-                MapWidget(),
-                SizedBox(height: 20,),
+                const MapWidget(),
+                const SizedBox(height: 20,),
                 InputTextField(label: "name:", content: location["name"],readOnly: readOnly,),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 InputTextField(label: "Address:", content: location["street"],readOnly: readOnly,),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 InputTextField(label: "Radius:", content: location["radius"],readOnly: readOnly,),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 if(readOnly)...[
                   CustomIconButton(text: "Edit Location", icon: Icons.settings, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,)
                 ]else...[
                   CustomIconButton(text: "Save Changes", icon: Icons.check, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,)
                 ],
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
             ],
           );
         });

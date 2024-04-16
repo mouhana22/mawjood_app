@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _loginUser() async {
     try {
-      // Try to sign in the user with the provided credentials
+      //  sign in the user with the provided credentials
       final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
         // Navigate to ProfilePage after successful login
       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ProfilePage()),
+                      MaterialPageRoute(builder: (context) => const ProfilePage()),
                     );
       }
     } on FirebaseAuthException catch (e) {
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 // Catch any other exceptions that might occur
     print(e); // Log the error for debugging purposes
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("An unexpected error occurred. Please try again.")),
+        const SnackBar(content: Text("An unexpected error occurred. Please try again.")),
     );
       // Using ScaffoldMessenger to show user feedback
       ScaffoldMessenger.of(context).showSnackBar(
@@ -59,11 +59,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3730A3),
+        backgroundColor: const Color(0xFF3730A3),
         elevation: 0,
         toolbarHeight: 0,
         leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: Colors.black), // Adjust color as needed
+    icon: const Icon(Icons.arrow_back, color: Colors.black), 
     onPressed: () => Navigator.of(context).pop(),
   ),
 
