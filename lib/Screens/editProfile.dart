@@ -12,7 +12,7 @@ class EditProfile extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = true;
-  String? _name, _email, phone, _jobTitle;
+
 
   // Defining the text editing controllers
   late TextEditingController _nameController;

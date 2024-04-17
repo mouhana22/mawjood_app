@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mawjood_app/Screens/Profile.dart';
@@ -9,7 +11,6 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -28,29 +29,28 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       );
 
-       if (userCredential.user != null) {
+      if (userCredential.user != null) {
         // Navigate to ProfilePage after successful login
-      Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ProfilePage()),
-                    );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
       }
     } on FirebaseAuthException catch (e) {
-      // Handle errors from FirebaseAuth
       var errorMessage = "An error occurred, please try again";
       if (e.code == 'user-not-found') {
         errorMessage = 'No user found for that email.';
       } else if (e.code == 'wrong-password') {
         errorMessage = 'Wrong password provided.';
       }
-// Catch any other exceptions that might occur
-    print(e); // Log the error for debugging purposes
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("An unexpected error occurred. Please try again.")),
-    );
-      // Using ScaffoldMessenger to show user feedback
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(errorMessage)),
+      );
+    } catch (e) {
+      print(e); // Log the error for debugging purposes
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("An unexpected error occurred. Please try again.")),
       );
     }
   }
@@ -59,14 +59,12 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF3730A3),
-        elevation: 0,
-        toolbarHeight: 0,
+        backgroundColor: Colors.white, // Changed for better visibility
+        elevation: 1, // Show some shadow
         leading: IconButton(
-    icon: const Icon(Icons.arrow_back, color: Colors.black), 
-    onPressed: () => Navigator.of(context).pop(),
-  ),
-
+          icon: const Icon(Icons.arrow_back, color: Colors.black), // Ensure icon is visible
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Center(
         child: Padding(
@@ -118,4 +116,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
+} 
