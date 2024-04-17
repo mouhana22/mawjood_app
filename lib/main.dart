@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mawjood_app/Screens/adminScreens/adminScreen.dart';
+import 'package:mawjood_app/Screens/adminScreens/employeeList.dart';
 import 'package:mawjood_app/Screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -20,8 +22,6 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
         title: 'Mawjood',
         debugShowCheckedModeBanner: false,
-        home: HomePage(
-          hasAccount: true,
-        ));
+        home: AdminScreen());
   }
 }

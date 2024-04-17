@@ -26,7 +26,9 @@ class _LocationCardState extends State<LocationCard> {
   const url = "https://66016fdf87c91a11641ad6fd.mockapi.io/locatons";
   final uri = Uri.parse(url);
   final response = await http.get(uri);
+  setState(() {
   _locations = jsonDecode(response.body);
+  });
   }
 
   bool readOnly = true;

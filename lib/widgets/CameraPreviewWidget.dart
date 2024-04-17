@@ -10,7 +10,7 @@ class CameraPreviewWidget extends StatefulWidget {
 
 class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   late CameraController _controller;
-  late Future<void>? _initializeControllerFuture; // Add nullable Future
+  late Future<void> _initializeControllerFuture; // Remove nullable Future
 
   @override
   void initState() {
@@ -22,11 +22,14 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   Future<void> _initializeCamera() async {
     // Obtain a list of the available cameras
     final cameras = await availableCameras();
-    // Get the first camera from the list
-    final firstCamera = cameras.first;
+    // Find the front camera among the available cameras
+    final frontCamera = cameras.firstWhere(
+      (camera) => camera.lensDirection == CameraLensDirection.front,
+      orElse: () => cameras.first,
+    );
     // Initialize the camera controller
     _controller = CameraController(
-      firstCamera,
+      frontCamera,
       ResolutionPreset.medium,
     );
     // Initialize the controller future
