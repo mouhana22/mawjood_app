@@ -7,6 +7,7 @@ import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/button.dart';
 import 'package:mawjood_app/widgets/inputTextField.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -59,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white, // Changed for better visibility
+        backgroundColor: Colors.white, 
         elevation: 1, // Show some shadow
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black), // Ensure icon is visible

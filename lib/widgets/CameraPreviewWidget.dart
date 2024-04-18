@@ -10,7 +10,7 @@ class CameraPreviewWidget extends StatefulWidget {
 
 class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   late CameraController _controller;
-  late Future<void> _initializeControllerFuture; // Remove nullable Future
+   Future<void> ?_initializeControllerFuture; // Remove nullable Future
 
   @override
   void initState() {
