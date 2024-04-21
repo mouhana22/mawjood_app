@@ -18,11 +18,11 @@ class _EditProfilePageState extends State<EditProfile> {
   TextEditingController _jobTitleController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
 
-  // Styles
-  final Color primaryColor = const Color(0xFF3730A3); // Assuming primary color is shared across pages
+  // Styling for the page
+  final Color primaryColor = const Color(0xFF3730A3); 
   final TextStyle inputTextStyle = const TextStyle(fontSize: 15, color: Colors.black54);
   final TextStyle labelTextStyle = TextStyle(fontSize: 14, color: Colors.grey[800]);
-  final InputDecoration inputDecoration = InputDecoration(
+  final InputDecoration inputDecoration = const InputDecoration(
     border: OutlineInputBorder(),
     contentPadding: EdgeInsets.all(10),
     isDense: true,
@@ -72,7 +72,7 @@ class _EditProfilePageState extends State<EditProfile> {
       appBar: AppBar(
         title: const Text("Edit Profile"),
         backgroundColor: primaryColor,
-        foregroundColor: Colors.white, // Ensures icon and text color adapts well
+        foregroundColor: Colors.white, 
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -115,7 +115,7 @@ class _EditProfilePageState extends State<EditProfile> {
           borderSide: BorderSide(color: primaryColor),
         ),
         border: OutlineInputBorder(),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red),
         ),
       ),
