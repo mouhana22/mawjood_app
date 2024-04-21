@@ -13,16 +13,20 @@ class _EditProfilePageState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = true;
 
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _jobTitleController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
 
-  // Defining the text editing controllers
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _jobTitleController;
- late TextEditingController _phoneController;
-  // Defining colors and styles for the page
-  final Color primaryColor = const Color(0xFF3730A3);
-  final TextStyle inputTextStyle = const TextStyle(fontSize: 18, color: Colors.black87);
-  final TextStyle labelTextStyle = TextStyle(fontSize: 16, color: Colors.grey[600]);
+  // Styles
+  final Color primaryColor = const Color(0xFF3730A3); // Assuming primary color is shared across pages
+  final TextStyle inputTextStyle = const TextStyle(fontSize: 15, color: Colors.black54);
+  final TextStyle labelTextStyle = TextStyle(fontSize: 14, color: Colors.grey[800]);
+  final InputDecoration inputDecoration = InputDecoration(
+    border: OutlineInputBorder(),
+    contentPadding: EdgeInsets.all(10),
+    isDense: true,
+  );
 
   @override
   void initState() {
@@ -32,7 +36,7 @@ class _EditProfilePageState extends State<EditProfile> {
 
   Future<void> _fetchUserProfile() async {
     var userId = FirebaseAuth.instance.currentUser!.uid;
-    var doc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    var doc = await FirebaseFirestore.instance.collection('requests').doc(userId).get();
     if (doc.exists) {
       Map<String, dynamic>? data = doc.data();
       _initTextControllers(data);
@@ -43,7 +47,6 @@ class _EditProfilePageState extends State<EditProfile> {
       setState(() {
         _isLoading = false;
       });
-      
     }
   }
 
@@ -59,7 +62,7 @@ class _EditProfilePageState extends State<EditProfile> {
     _nameController.dispose();
     _emailController.dispose();
     _jobTitleController.dispose();
-     _phoneController.dispose(); 
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -67,12 +70,12 @@ class _EditProfilePageState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Profile", style: TextStyle(color: Colors.white)),
-         elevation: 0,
+        title: const Text("Edit Profile"),
         backgroundColor: primaryColor,
+        foregroundColor: Colors.white, // Ensures icon and text color adapts well
         actions: [
           IconButton(
-            icon: const Icon(Icons.save, color: Colors.white),
+            icon: const Icon(Icons.save),
             onPressed: _isLoading ? null : _saveProfile,
           ),
         ],
@@ -80,14 +83,17 @@ class _EditProfilePageState extends State<EditProfile> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20),
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
                     _buildTextField(_nameController, "Name", "Please enter your name"),
+                    const SizedBox(height: 16),
                     _buildTextField(_emailController, "Email", "Please enter your email"),
+                    const SizedBox(height: 16),
                     _buildTextField(_phoneController, "Phone", "Please enter your phone number"),
+                    const SizedBox(height: 16),
                     _buildTextField(_jobTitleController, "Job Title", "Please enter your job title"),
                   ],
                 ),
@@ -102,14 +108,15 @@ class _EditProfilePageState extends State<EditProfile> {
       decoration: InputDecoration(
         labelText: label,
         labelStyle: labelTextStyle,
-        enabledBorder: UnderlineInputBorder(      
-          borderSide: BorderSide(color: primaryColor),   
-        ),  
-        focusedBorder: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: primaryColor),
         ),
-        border: UnderlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: primaryColor),
+        ),
+        border: OutlineInputBorder(),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
         ),
       ),
       style: inputTextStyle,
@@ -121,11 +128,11 @@ class _EditProfilePageState extends State<EditProfile> {
     final form = _formKey.currentState;
     if (form != null && form.validate()) {
       var userId = FirebaseAuth.instance.currentUser!.uid;
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      await FirebaseFirestore.instance.collection('requests').doc(userId).update({
         'name': _nameController.text,
         'email': _emailController.text,
         'jobTitle': _jobTitleController.text,
-         'phone': _phoneController.text, 
+        'phone': _phoneController.text, 
       });
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile updated successfully!', style: TextStyle(color: Colors.white))));
