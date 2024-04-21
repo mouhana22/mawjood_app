@@ -3,9 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/button.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'dart:io';
+import 'package:mawjood_app/widgets/inputTextField.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -14,178 +13,176 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  // كنترولز للكتابخ
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController jobController = TextEditingController();
 
+  bool _agreeToTerms = false;
+
   Future<void> registerUser() async {
-  try {
-    // Create a new user with FirebaseAuth
-    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+    if (!_agreeToTerms) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('You must agree to the terms and conditions before registering.'),
+      ));
+      return;
+    }
 
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String? customUserId; // Make it nullable
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
-    await firestore.runTransaction((Transaction transaction) async {
-      DocumentReference counterRef = firestore.collection('counters').doc('userIDs');
-      DocumentSnapshot snapshot = await transaction.get(counterRef);
+      FirebaseFirestore.instance
+          .collection('requests')
+          .doc(userCredential.user!.uid)
+          .set({
+        'name': nameController.text.trim(),
+        'phone': phoneController.text.trim(),
+        'email': emailController.text.trim(),
+        'jobTitle': jobController.text.trim(),
+        'status': true,
+      });
 
-      if (!snapshot.exists) {
-        throw Exception("Counter document does not exist!");
-      }
-
-      int lastUserId = snapshot['lastUserId'] ?? 999; // Start from 999 so that the first user gets 1000
-      customUserId = '${lastUserId + 1}';
-
-      // Update the counter
-      transaction.update(counterRef, {'lastUserId': lastUserId + 1});
-    });
-
-    // Ensure customUserId was actually assigned a value
-    if (customUserId != null) {
-  await firestore.collection('users').doc(userCredential.user!.uid).set({
-    'customId': customUserId,
-    'name': nameController.text.trim(),
-    'phone': nameController.text.trim(),
-    'email': emailController.text.trim(),
-    'jobTitle': jobController.text.trim(),
-    'photoUrl': _imageUrl ?? "default_photo_url", // Save the image URL; use a default or leave blank if no photo was selected
-  });
-      // Show a confirmation message
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Registration successful. Your ID is $customUserId'),
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Registration request sent. You will be able to check in when the admin accepts your request.'),
       ));
 
-      // Navigate back to the login screen after showing the message
-      Navigator.popUntil(context, ModalRoute.withName('/'));
-    } else {
-      throw Exception("Failed to generate custom user ID.");
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to register user: $e")));
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to register user: $e")));
   }
-}
-File? _image; // Variable to hold the selected image file
-String? _imageUrl; // Variable to hold the uploaded image URL
 
-// Method to pick an image
-Future<void> pickImage() async {
-  final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-  if (pickedFile != null) {
-    setState(() {
-      _image = File(pickedFile.path);
-    }); 
-    uploadImage();
-  }
-}
-
-// Method to upload the image to Firebase Storage
-Future<void> uploadImage() async {
-  try {
-    if (_image != null) {
-      String fileName = 'user_photos/${DateTime.now().millisecondsSinceEpoch.toString()}';
-      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref().child(fileName);
-      firebase_storage.UploadTask task = ref.putFile(_image!);
-      firebase_storage.TaskSnapshot snapshot = await task;
-      _imageUrl = await snapshot.ref.getDownloadURL();
-    }
-  } catch (e) {
-    print(e); // Handle errors as needed
-  }
-}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register'),
+        backgroundColor: Colors.white,
+        elevation: 1,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          TextFormField(
-            controller: nameController,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              hintText: 'Your name',
-            ),
-          ),
-          const SizedBox(height: 8.0),
-          TextFormField(
-            controller: phoneController,
-            decoration: const InputDecoration(
-              labelText: 'Phone Number',
-              hintText: 'Your phone number',
-            ),
-            keyboardType: TextInputType.phone,
-          ),
-          const SizedBox(height: 8.0),
-          TextFormField(
-            controller: emailController,
-            decoration: const InputDecoration(
-              labelText: 'Email',
-              hintText: 'Your email',
-            ),
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 8.0),
-          TextFormField(
-            controller: passwordController,
-            decoration: const InputDecoration(
-              labelText: 'Password',
-              hintText: 'Your password',
-            ),
-            obscureText: true,
-          ),
-          const SizedBox(height: 8.0),
-          TextFormField(
-            controller: jobController,
-            decoration: const InputDecoration(
-              labelText: 'Job Title',
-              hintText: 'Type role',
-            ),
-          ),
-          const SizedBox(height: 16.0),
-          TextButton(
-            child: const Text('Scan'),
-            onPressed: () {
-            pickImage(); // Calls the pickImage method // Call the pickImage method when the button is pressed
-            },
-          ),
-          const SizedBox(height: 16.0),
-          Button(
-            text: 'Register',
-            type: btnType.Primary,
-            height: 50,
-            width: double.infinity,
-            onPressed: registerUser,
-          ),
-          const SizedBox(height: 16.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Or register with check in'),
-              GestureDetector(
-                onTap: () {
-                  // *****Add the action here later*****
-                },
-                child: Text(
-                  ' Check in ',
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Register',
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    decoration: TextDecoration.underline,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 55, 56, 132),
                   ),
                 ),
-              ),
-              const Icon(Icons.arrow_right, size: 24),
-            ],
+                const SizedBox(height: 30),
+                InputTextField(
+                  label: "Name",
+                  hintText: "Your name",
+                  controller: nameController,
+                  width: 320,
+                  height: 40,
+                ),
+                const SizedBox(height: 20),
+                InputTextField(
+                  label: "Phone Number",
+                  hintText: "Your phone number",
+                  controller: phoneController,
+                  width: 320,
+                  height: 40,
+                ),
+                const SizedBox(height: 20),
+                InputTextField(
+                  label: "Email",
+                  hintText: "Your email",
+                  controller: emailController,
+                  width: 320,
+                  height: 40,
+                ),
+                const SizedBox(height: 20),
+                InputTextField(
+                  label: "Password",
+                  hintText: "Your password",
+                  controller: passwordController,
+                  obscureText: true,
+                  width: 320,
+                  height: 40,
+                ),
+                const SizedBox(height: 20),
+                InputTextField(
+                  label: "Job Title",
+                  hintText: "Your role",
+                  controller: jobController,
+                  width: 320,
+                  height: 40,
+                ),
+                
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    // add action (camera widget) actiono here later
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.camera_alt, color: Theme.of(context).primaryColor),
+                      const SizedBox(width: 8),
+                      Text("Scan", style: TextStyle(color: Theme.of(context).primaryColor)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Checkbox(
+                      value: _agreeToTerms,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _agreeToTerms = value!;
+                        });
+                      },
+                    ),
+                    const Text("I agree to the terms and conditions"),
+                  ],
+                ),
+                
+                const SizedBox(height: 20),
+                Button(
+                  text: 'Register',
+                  type: btnType.Primary,
+                  height: 50,
+                  width: double.infinity,
+                  onPressed: registerUser,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Or register with check-in'),
+                    GestureDetector(
+                      onTap: () {
+                        // ***add action for check in here later**
+                      },
+                      child: const Icon(Icons.arrow_right),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }

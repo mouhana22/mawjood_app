@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const RegisterPage()),
+                              builder: (context) =>  RegisterPage()),
                         );
                       },
                       icon: Icons.login,

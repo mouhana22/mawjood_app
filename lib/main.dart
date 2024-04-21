@@ -22,6 +22,6 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
         title: 'Mawjood',
         debugShowCheckedModeBanner: false,
-        home: AdminScreen());
+        home: HomePage(hasAccount: true));
   }
 }
