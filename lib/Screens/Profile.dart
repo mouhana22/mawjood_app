@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mawjood_app/Screens/editProfile.dart';
+import 'package:mawjood_app/Screens/login.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -39,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _logout() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacementNamed('/login');
+    MaterialPageRoute(builder: (context) => const LoginPage());
   }
 
   @override
@@ -120,13 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     subtitle: Text(userInfo?['jobTitle'] ?? 'Job title not available'),
                     leading: const Icon(Icons.work, color: Color(0xFF3730A3)),
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "Employee History",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  const Divider(color: Color.fromARGB(255, 66, 66, 66)),
-                  ..._buildHistoryList(userInfo?['history'] as List?),
+                
                 ],
               ),
             ),
@@ -136,26 +131,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  List<Widget> _buildHistoryList(List? historyData) {
-    if (historyData == null || historyData.isEmpty) {
-      return [const Padding(
-        padding: EdgeInsets.only(top: 10.0),
-        child: Text('No history available', textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
-      )];
+
     }
 
-    return historyData.map((data) {
-      return ListTile(
-        title: Text(
-          data['event'] ?? 'Unknown Event',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          data['date'] ?? 'Unknown Date',
-          style: const TextStyle(fontSize: 14),
-        ),
-        leading: const Icon(Icons.history, color: Color(0xFF3730A3)),
-      );
-    }).toList();
-  }
-}

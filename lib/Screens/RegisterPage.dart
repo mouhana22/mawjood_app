@@ -45,7 +45,9 @@ class _RegisterPageState extends State<RegisterPage> {
         'phone': phoneController.text.trim(),
         'email': emailController.text.trim(),
         'jobTitle': jobController.text.trim(),
+        'admin': false, 
         'status': true,
+        'id' : userCredential.user!.uid
       });
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
