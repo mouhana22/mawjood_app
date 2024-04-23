@@ -12,8 +12,17 @@ class MapWidget extends StatefulWidget {
     super.key,
     this.width = 320,
     this.height = 180,
+    required this.name,
+    required this.raduis,
+    required this.lat,
+    required this.lng,
   });
 
+  final String name;
+  final double raduis;
+  final double lat;
+  final double lng;
+  
   final double width;
   final double height;
 
@@ -32,29 +41,30 @@ class _MapWidgetState extends State<MapWidget> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: GoogleMap(
-        initialCameraPosition: const CameraPosition(
-            target: LatLng(21.559278, 39.144475), zoom: 13),
+        initialCameraPosition: CameraPosition(
+            target: LatLng(widget.lat, widget.lng), zoom: 13),
         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
           Factory<OneSequenceGestureRecognizer>(
             () => EagerGestureRecognizer(),
           ),
         },
         markers: {
-          const Marker(
-            markerId: MarkerId('DerwazaHQ'),
-            position: LatLng(21.559278, 39.144475),
+          Marker(
+            markerId: MarkerId(widget.name),
+            position: LatLng(widget.lat, widget.lng),
             ),
         },
         circles: {
           Circle(
-            circleId: CircleId('range'),
-            center: LatLng(21.559278, 39.144475),
-            radius: 100.0,
+            circleId: const CircleId('range'),
+            center: LatLng(widget.lat, widget.lng),
+            radius: widget.raduis,
             strokeWidth: 2,
-            fillColor: Color(0xFF006491).withOpacity(0.2),
+            fillColor: const Color(0xFF006491).withOpacity(0.2),
           )
         },
       ),
     );
   }
 }
+//LatLng(21.559278, 39.144475)

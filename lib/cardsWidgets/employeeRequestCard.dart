@@ -57,9 +57,10 @@ class _EmployeeRequestCardState extends State<EmployeeRequestCard> {
           child: TextField(
             onChanged: filterEmployees,
             decoration: InputDecoration(
-              hintText: 'Search by name...',
+              hintText: 'Search...',
               prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50.0)),
             ),
           ),
         ),
