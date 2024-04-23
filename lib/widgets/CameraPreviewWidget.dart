@@ -7,7 +7,7 @@ class CameraPreviewWidget extends StatefulWidget {
 }
 
 class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
-  late CameraController _controller;
+  CameraController? _controller;
   late Future<void> _initializeControllerFuture; // Remove nullable Future
 
   @override
@@ -31,7 +31,7 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
       ResolutionPreset.medium,
     );
     // Initialize the controller future
-    _initializeControllerFuture = _controller.initialize();
+    _initializeControllerFuture = _controller!.initialize();
     // Update the state once the controller is initialized
     if (mounted) {
       setState(() {});
@@ -41,7 +41,7 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   @override
   void dispose() {
     // Dispose of the camera controller when the widget is disposed
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -56,7 +56,7 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
             child: Container(
               height: 250,
               width: 250,
-              child: CameraPreview(_controller),
+              child: CameraPreview(_controller!),
             ),
           );
         } else {

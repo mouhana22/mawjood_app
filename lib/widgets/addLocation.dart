@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mawjood_app/cardsWidgets/locationCard.dart';
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/iconButton.dart';
 
@@ -12,7 +13,9 @@ class AddLocation extends StatelessWidget {
           text: 'Add New Location',
           icon: Icons.add,
           type: btnType.Primary,
-          onPressed: (){},
+          onPressed: (){
+            LocationCard();
+          },
     );
   }
 }

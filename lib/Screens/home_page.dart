@@ -4,14 +4,28 @@ import 'package:mawjood_app/screens/Unrecognized.dart';
 import 'package:mawjood_app/screens/RegisterPage.dart'; // Import RegisterPage
 import 'package:mawjood_app/Screens/login.dart';
 import 'package:mawjood_app/widgets/CameraPreviewWidget.dart';
+import 'package:mawjood_app/widgets/checkLocation.dart';
 import 'package:mawjood_app/widgets/imageWidget.dart'; // Import LoginPage
 import 'package:mawjood_app/widgets/iconButton.dart'; // Import CustomIconButton widget
 import 'package:mawjood_app/widgets/btnTypes.dart'; // Import btnType enum
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final bool hasAccount; // Flag to check if the user has an account
 
   const HomePage({Key? key, required this.hasAccount}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool? location;
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    location = await CheckLocation().checkLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +106,10 @@ class HomePage extends StatelessWidget {
                           padding: const EdgeInsets.only(bottom: 50.0),
                           child: CustomIconButton(
                             onPressed: () {
-                              if (hasAccount) {
+                              if(location == null){
+                                return;
+                              }
+                              if (widget.hasAccount && location!) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
