@@ -126,7 +126,7 @@ class _EditProfilePageState extends State<EditProfile> {
       setState(() { _isLoading = true; });
       try {
         var userId = FirebaseAuth.instance.currentUser!.uid;
-        await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        await FirebaseFirestore.instance.collection('requests').doc(userId).set({
           'name': _nameController.text,
           'email': _emailController.text,
           'jobTitle': _jobTitleController.text,
