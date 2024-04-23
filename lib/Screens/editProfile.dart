@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
@@ -37,7 +40,7 @@ class _EditProfilePageState extends State<EditProfile> {
 
   Future<void> _fetchUserProfile() async {
     var userId = FirebaseAuth.instance.currentUser!.uid;
-    var doc = await FirebaseFirestore.instance.collection('requests').doc(userId).get();
+    var doc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
     if (doc.exists) {
       Map<String, dynamic>? data = doc.data();
       _initTextControllers(data);
@@ -56,6 +59,7 @@ class _EditProfilePageState extends State<EditProfile> {
     _emailController = TextEditingController(text: data?['email']);
     _jobTitleController = TextEditingController(text: data?['jobTitle']);
     _phoneController = TextEditingController(text: data?['phone']);
+     _imageUrl = data?['image_URL'];
   }
 
   @override
@@ -67,6 +71,24 @@ class _EditProfilePageState extends State<EditProfile> {
     super.dispose();
   }
 
+ Future<void> _updateProfilePhoto() async {
+    final _picker = ImagePicker();
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      File imageFile = File(photo.path);
+
+      // Upload to Firebase Storage
+      var userId = FirebaseAuth.instance.currentUser!.uid;
+      var storageRef = FirebaseStorage.instance.ref().child('user_images/$userId');
+      var uploadTask = storageRef.putFile(imageFile);
+      var storageSnapshot = await uploadTask.whenComplete(() {});
+      var downloadUrl = await storageSnapshot.ref.getDownloadURL();
+
+      setState(() {
+        _imageUrl = downloadUrl;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +118,12 @@ class _EditProfilePageState extends State<EditProfile> {
                     _buildTextField(_phoneController, "Phone", "Please enter your phone number"),
                     const SizedBox(height: 16),
                     _buildTextField(_jobTitleController, "Job Title", "Please enter your job title"),
+                      if (_imageUrl != null)
+                Image.network(_imageUrl!, height: 100, width: 100),
+              ElevatedButton(
+                onPressed: _updateProfilePhoto,
+                child: const Text('Update Profile Photo'),
+              ),
                   ],
                 ),
               ),
@@ -134,6 +162,7 @@ class _EditProfilePageState extends State<EditProfile> {
         'email': _emailController.text,
         'jobTitle': _jobTitleController.text,
         'phone': _phoneController.text, 
+        'image_URL': _imageUrl ?? '',
       });
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile updated successfully!', style: TextStyle(color: Colors.white))));
