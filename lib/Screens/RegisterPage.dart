@@ -52,6 +52,11 @@ class _RegisterPageState extends State<RegisterPage> {
       final storageRef = FirebaseStorage.instance.ref();
       final storagePath = storageRef.child("requests/$imageName");
       await storagePath.putFile(File(_image!.path));
+
+      final url = await storagePath.getDownloadURL(); // Corrected line
+
+      print(url);
+      print("----------------------------------");
       FirebaseFirestore.instance
           .collection('requests')
           .doc(userCredential.user!.uid)
@@ -63,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'admin': false,
         'status': true,
         'id': userCredential.user!.uid,
-        'image_URL': imageName,
+        'image_URL': url,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
