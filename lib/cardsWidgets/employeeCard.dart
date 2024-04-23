@@ -37,7 +37,7 @@ class _EmployeeCardState extends State<EmployeeCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ImageWidget(avatarURL: employee["avatar"]),
+                  ImageWidget(avatarURL: employee["image_URL"]),
                   const SizedBox(
                     width: 20,
                   ),
@@ -69,7 +69,7 @@ class _EmployeeCardState extends State<EmployeeCard> {
                     Column(
                       children: [widget.actionRow[i](employee)],
                     ),
-                    if (i < widget.actionRow.length - 1) SizedBox(width: 20),
+                    if (i < widget.actionRow.length - 1) const SizedBox(width: 20),
                   ],
                 ],
               ),

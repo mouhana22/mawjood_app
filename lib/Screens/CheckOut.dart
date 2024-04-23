@@ -6,9 +6,11 @@ import 'package:mawjood_app/widgets/imageWidget.dart';
 import 'package:mawjood_app/widgets/statusBox.dart';
 
 class CheckOut extends StatelessWidget {
+  const CheckOut({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Color.fromRGBO(238, 242, 255, 1),
       body: SafeArea(
         child: Center(

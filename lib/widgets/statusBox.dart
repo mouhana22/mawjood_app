@@ -14,19 +14,19 @@ class StatusBox extends StatelessWidget {
       showDateTime; // New parameter to indicate whether to show DateTimeWidget
 
   const StatusBox({
-    Key? key,
+    super.key,
     required this.icon,
     required this.iconColor,
     required this.title,
     required this.textColor,
     required this.color,
     this.showDateTime = true, // Default value to true
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(50),
+      padding: const EdgeInsets.all(50),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(10),
@@ -38,7 +38,7 @@ class StatusBox extends StatelessWidget {
             color: iconColor,
             size: 40.0,
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           Text(
             title,
             style: TextStyle(
@@ -46,9 +46,9 @@ class StatusBox extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           if (showDateTime) // Conditionally show DateTimeWidget
-            DateTimeWidget(), // Show DateTimeWidget if showDateTime is true
+            const DateTimeWidget(), // Show DateTimeWidget if showDateTime is true
         ],
       ),
     );

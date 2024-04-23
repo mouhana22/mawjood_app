@@ -5,6 +5,8 @@ import 'package:mawjood_app/Screens/editProfile.dart';
 import 'package:mawjood_app/Screens/login.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -36,19 +38,16 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  void _logout() async {
+    await FirebaseAuth.instance.signOut();
+    MaterialPageRoute(builder: (context) => const LoginPage());
+  }
+
   @override
   Widget build(BuildContext context) {
-    void _editProfile() {
-      print('Edit Profile Clicked');
-       Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EditProfile()),
-                    );
-    }
-
-    Color appBarColor = Color(0xFF3730A3);
-    TextStyle titleStyle = TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white);
-    TextStyle subtitleStyle = TextStyle(fontSize: 20, color: Colors.white70);
+    Color appBarColor = const Color(0xFF3730A3);
+    TextStyle titleStyle = const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
+    TextStyle infoStyle = TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.9));
 
     return Scaffold(
       appBar: AppBar(
@@ -58,116 +57,80 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: _editProfile,
-            color: Colors.white,
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const EditProfile()),
+              );
+            },
           ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: _logout,
+          )
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: 
-                      Alignment.bottomCenter,
-                      colors: [Color(0xFF3730A3), Color(0xFF5C49E0)],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 60.0),
-                  child: CircleAvatar(
+            Container(
+              height: 250,
+              decoration: BoxDecoration(
+                color: appBarColor,
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+              ),
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
                     radius: 60,
-                    backgroundImage: NetworkImage(user?.photoURL ?? 'https://via.placeholder.com/150'),
-                    backgroundColor: Colors.white, // Ensuring there's a background color in case the image fails to load
+                    backgroundImage: NetworkImage(userInfo?['image_URL'] ?? 'https://via.placeholder.com/150'),
+                    backgroundColor: Colors.white70,
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 32),
-            Text(
-              userInfo?['name'] ?? 'No name',
-              style: titleStyle.copyWith(fontSize: 24, color: Colors.black87),
-            ),
-            SizedBox(height: 8),
-            Text(
-              userInfo?['email'] ?? 'No email',
-              style: subtitleStyle.copyWith(color: Colors.black54, fontSize: 18),
-            ),
-             SizedBox(height: 8),
-            Text(
-              userInfo?['phone'] ?? 'No phone number',
-              style: subtitleStyle.copyWith(color: Colors.black54, fontSize: 18),
-            ),
-            
-            SizedBox(height: 8),
-            Text(
-              userInfo?['jobTitle'] ?? 'No job Title',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.black87,
+                  const SizedBox(height: 10),
+                  Text(
+                    userInfo?['name'] ?? 'No name available',
+                    style: titleStyle.copyWith(fontSize: 18),
+                  ),
+                  Text(
+                    userInfo?['email'] ?? 'No email available',
+                    style: infoStyle,
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 16),
-            Divider(thickness: 1),
-            SizedBox(height: 16),
-            Text(
-              'Employee’s History',
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "User Details",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  const Divider(color: Color.fromARGB(255, 66, 66, 66)),
+                  ListTile(
+                    title: const Text("Phone"),
+                    subtitle: Text(userInfo?['phone'] ?? 'Phone not available'),
+                    leading: const Icon(Icons.phone, color: Color(0xFF3730A3)),
+                  ),
+                  ListTile(
+                    title: const Text("Job Title"),
+                    subtitle: Text(userInfo?['jobTitle'] ?? 'Job title not available'),
+                    leading: const Icon(Icons.work, color: Color(0xFF3730A3)),
+                  ),
+                
+                ],
               ),
             ),
-            SizedBox(height: 10),
-            ..._buildHistoryList(userInfo?['history'] as List?),
           ],
         ),
       ),
     );
   }
 
-  // Helper method to build a list of history tiles, now integrated within cards for a modern look
-  List<Widget> _buildHistoryList(List? historyData) {
-    if (historyData == null || historyData.isEmpty) {
-      return [Padding(
-        padding: const EdgeInsets.only(top: 10.0),
-        child: Text('No history available', textAlign: TextAlign.center, style: TextStyle(color: Colors.black54)),
-      )];
+
     }
 
-    return historyData.map((data) {
-      String date = data['date'] ?? 'Unknown Date';
-      String event = data['event'] ?? 'Unknown Event';
-      return Card(
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-          leading: Icon(Icons.history, color: Color(0xFF3730A3)),
-          title: Text(
-            event,
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 16,
-            ),
-          ),
-          subtitle: Text(
-            date,
-            style: TextStyle(
-              color: Colors.black54,
-            ),
-          ),
-        ),
-      );
-    }).toList();
-  }
-}

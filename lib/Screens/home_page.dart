@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:mawjood_app/Screens/CheckIn.dart';
 import 'package:mawjood_app/screens/Unrecognized.dart';
 import 'package:mawjood_app/screens/RegisterPage.dart'; // Import RegisterPage
@@ -8,10 +13,28 @@ import 'package:mawjood_app/widgets/checkLocation.dart';
 import 'package:mawjood_app/widgets/imageWidget.dart'; // Import LoginPage
 import 'package:mawjood_app/widgets/iconButton.dart'; // Import CustomIconButton widget
 import 'package:mawjood_app/widgets/btnTypes.dart'; // Import btnType enum
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   final bool hasAccount; // Flag to check if the user has an account
 
+  const HomePage({super.key, required this.hasAccount});
+
+  Future<String?> faceRecoginiton(String imagePath) async {
+    try {
+      final api = Uri.parse('http://mawjoodapi.pythonanywhere.com/recognize');
+      var request = http.MultipartRequest('POST', api);
+      request.files.add(await http.MultipartFile.fromPath('image', imagePath));
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        var responseData = await response.stream.bytesToString();
+        var jsonResponse = json.decode(responseData);
+        return jsonResponse.toString();
+      }
+    } catch (e) {
+      return e.toString();
+    }
+  }
   const HomePage({Key? key, required this.hasAccount}) : super(key: key);
 
   @override
@@ -29,8 +52,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<CameraPreviewWidgetState> _cameraPreviewKey = GlobalKey();
     return Scaffold(
-      backgroundColor: Color.fromARGB(148, 92, 94, 233),
+      backgroundColor: const Color.fromARGB(148, 92, 94, 233),
       body: Stack(
         children: [
           Positioned(
@@ -39,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               width: 470,
               height: 470,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color.fromARGB(96, 27, 25, 68),
               ),
@@ -47,16 +71,16 @@ class _HomePageState extends State<HomePage> {
           ),
           Column(
             children: [
-              SizedBox(height: 30),
-              ImageWidget(
+              const SizedBox(height: 30),
+              const ImageWidget(
                 avatarURL:
                     'https://i.ibb.co/0sM3NKG/logo-2-removebg-preview.png',
                 width: 70,
                 height: 70,
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -65,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RegisterPage()),
+                              builder: (context) => const RegisterPage()),
                         );
                       },
                       icon: Icons.login,
@@ -76,7 +100,8 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
                         );
                       },
                       icon: Icons.settings,
@@ -86,13 +111,13 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SizedBox(height: 120),
+              const SizedBox(height: 120),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
                   child: Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(16),
@@ -105,6 +130,29 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 50.0),
                           child: CustomIconButton(
+                            onPressed: () async {
+                              // Take a picture
+                              final image = await _cameraPreviewKey
+                                  .currentState!
+                                  .takePicture();
+                              var response = await faceRecoginiton(image!.path);
+                              if (response != null) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(response),
+                                  duration: Duration(seconds: 2),
+                                ));
+                              }
+                              final inputImage =
+                                  InputImage.fromFilePath(image!.path);
+                              // Deteced faces
+                              final faces = await FaceDetector(
+                                      options: FaceDetectorOptions())
+                                  .processImage(inputImage);
+
+                              // If there is faces then behave normally
+                              if (true) {
+                                // If there is no faces show a snackbar
                             onPressed: () {
                               if(location == null){
                                 return;
@@ -116,11 +164,11 @@ class _HomePageState extends State<HomePage> {
                                       builder: (context) => CheckIn()),
                                 );
                               } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Unrecognized()),
-                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text("No face detected"),
+                                  duration: Duration(seconds: 2),
+                                ));
                               }
                             },
                             text: 'Check-in',
@@ -140,7 +188,9 @@ class _HomePageState extends State<HomePage> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: CameraPreviewWidget(), // Add the CameraPreviewWidget here
+            child: CameraPreviewWidget(
+              key: _cameraPreviewKey,
+            ), // Add the CameraPreviewWidget here
           ),
         ],
       ),
