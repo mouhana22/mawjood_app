@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/button.dart';
 import 'package:mawjood_app/widgets/inputTextField.dart';
@@ -20,23 +24,34 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController jobController = TextEditingController();
-
+  File? _image;
   bool _agreeToTerms = false;
 
   Future<void> registerUser() async {
     if (!_agreeToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You must agree to the terms and conditions before registering.'),
+        content: Text(
+            'You must agree to the terms and conditions before registering.'),
+      ));
+      return;
+    } else if (_image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('You must do a scan.'),
       ));
       return;
     }
 
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-
+      String imageName =
+          "${emailController.text.trim()}_${phoneController.text.trim()}.jpg";
+      final storageRef = FirebaseStorage.instance.ref();
+      final storagePath = storageRef.child("requests/$imageName");
+      await storagePath.putFile(File(_image!.path));
       FirebaseFirestore.instance
           .collection('requests')
           .doc(userCredential.user!.uid)
@@ -45,18 +60,32 @@ class _RegisterPageState extends State<RegisterPage> {
         'phone': phoneController.text.trim(),
         'email': emailController.text.trim(),
         'jobTitle': jobController.text.trim(),
-        'admin': false, 
+        'admin': false,
         'status': true,
-        'id' : userCredential.user!.uid
+        'id': userCredential.user!.uid,
+        'image_URL': imageName,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Registration request sent. You will be able to check in when the admin accepts your request.'),
+        content: Text(
+            'Registration request sent. You will be able to check in when the admin accepts your request.'),
       ));
 
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to register user: $e")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Failed to register user: $e")));
+    }
+  }
+
+  // Method to pick an image
+  Future<void> pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
     }
   }
 
@@ -128,21 +157,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: 320,
                   height: 40,
                 ),
-                
                 const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    // add action (camera widget) actiono here later
+                TextButton(
+                  child: const Text('Scan'),
+                  onPressed: () {
+                    pickImage(); // Calls the pickImage method // Call the pickImage method when the button is pressed
                   },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.camera_alt, color: Theme.of(context).primaryColor),
-                      const SizedBox(width: 8),
-                      Text("Scan", style: TextStyle(color: Theme.of(context).primaryColor)),
-                    ],
-                  ),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -159,7 +179,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     const Text("I agree to the terms and conditions"),
                   ],
                 ),
-                
                 const SizedBox(height: 20),
                 Button(
                   text: 'Register',
