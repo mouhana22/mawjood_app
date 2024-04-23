@@ -20,6 +20,13 @@ class HomePage extends StatefulWidget {
 
   const HomePage({super.key, required this.hasAccount});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool? location;
+
   Future<String?> faceRecoginiton(String imagePath) async {
     try {
       final api = Uri.parse('http://mawjoodapi.pythonanywhere.com/recognize');
@@ -35,14 +42,6 @@ class HomePage extends StatefulWidget {
       return e.toString();
     }
   }
-  const HomePage({Key? key, required this.hasAccount}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  bool? location;
   @override
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
@@ -131,6 +130,16 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.only(bottom: 50.0),
                           child: CustomIconButton(
                             onPressed: () async {
+                              if(location == null){
+                                return;
+                              }
+                              if (widget.hasAccount && location!) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CheckIn()),
+                                );
+                              }
                               // Take a picture
                               final image = await _cameraPreviewKey
                                   .currentState!
@@ -153,22 +162,7 @@ class _HomePageState extends State<HomePage> {
                               // If there is faces then behave normally
                               if (true) {
                                 // If there is no faces show a snackbar
-                            onPressed: () {
-                              if(location == null){
-                                return;
-                              }
-                              if (widget.hasAccount && location!) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CheckIn()),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text("No face detected"),
-                                  duration: Duration(seconds: 2),
-                                ));
+                            
                               }
                             },
                             text: 'Check-in',
@@ -197,3 +191,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+// onPressed: () {
+//                               if(location == null){
+//                                 return;
+//                               }
+//                               if (widget.hasAccount && location!) {
+//                                 Navigator.push(
+//                                   context,
+//                                   MaterialPageRoute(
+//                                       builder: (context) => CheckIn()),
+//                                 );
