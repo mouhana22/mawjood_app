@@ -17,6 +17,7 @@ class _EditProfilePageState extends State<EditProfile> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _jobTitleController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
+   String? _imageUrl;
 
   // Styling for the page
   final Color primaryColor = const Color(0xFF3730A3); 
