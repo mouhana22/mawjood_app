@@ -10,7 +10,7 @@ class InputTextField extends StatefulWidget {
     this.height = 40,
     this.hintText = "",
     this.controller, // Added the controller property
-    this.obscureText = false, // Added the obscureText property
+    this.obscureText = false, 
   });
 
   final double width;

@@ -45,7 +45,7 @@ class Unrecognized extends StatelessWidget {
                       // Navigate the user to the register page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const RegisterPage()),
+                        MaterialPageRoute(builder: (context) =>  RegisterPage()),
                       );
                     },
                     child: Text(

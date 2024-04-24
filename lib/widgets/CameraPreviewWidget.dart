@@ -5,10 +5,10 @@ class CameraPreviewWidget extends StatefulWidget {
   const CameraPreviewWidget({super.key});
 
   @override
-  _CameraPreviewWidgetState createState() => _CameraPreviewWidgetState();
+  CameraPreviewWidgetState createState() => CameraPreviewWidgetState();
 }
 
-class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
+class CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture; // Remove nullable Future
 
@@ -24,7 +24,7 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
     final cameras = await availableCameras();
     // Find the front camera among the available cameras
     final frontCamera = cameras.firstWhere(
-      (camera) => camera.lensDirection == CameraLensDirection.front,
+      (camera) => camera.lensDirection == CameraLensDirection.back,
       orElse: () => cameras.first,
     );
     // Initialize the camera controller
@@ -33,17 +33,31 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
       ResolutionPreset.medium,
     );
     // Initialize the controller future
-    _initializeControllerFuture = _controller.initialize();
+    _initializeControllerFuture = _controller!.initialize();
     // Update the state once the controller is initialized
+
     if (mounted) {
       setState(() {});
+    }
+  }
+
+  Future<XFile?> takePicture() async {
+    try {
+      if (!_controller.value.isInitialized) {
+        throw 'Camera is not initialized';
+      }
+      final XFile picture = await _controller.takePicture();
+      return picture;
+    } catch (e) {
+      print('Error taking picture: $e');
+      return null;
     }
   }
 
   @override
   void dispose() {
     // Dispose of the camera controller when the widget is disposed
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -58,7 +72,7 @@ class _CameraPreviewWidgetState extends State<CameraPreviewWidget> {
             child: SizedBox(
               height: 250,
               width: 250,
-              child: CameraPreview(_controller),
+              child: CameraPreview(_controller!),
             ),
           );
         } else {

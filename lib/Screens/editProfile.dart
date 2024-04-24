@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -13,16 +16,13 @@ class _EditProfilePageState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = true;
 
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _jobTitleController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  String? _imageUrl;
 
-  // Defining the text editing controllers
-  late TextEditingController _nameController;
-  late TextEditingController _emailController;
-  late TextEditingController _jobTitleController;
- late TextEditingController _phoneController;
-  // Defining colors and styles for the page
   final Color primaryColor = const Color(0xFF3730A3);
-  final TextStyle inputTextStyle = const TextStyle(fontSize: 18, color: Colors.black87);
-  final TextStyle labelTextStyle = TextStyle(fontSize: 16, color: Colors.grey[600]);
 
   @override
   void initState() {
@@ -31,48 +31,51 @@ class _EditProfilePageState extends State<EditProfile> {
   }
 
   Future<void> _fetchUserProfile() async {
-    var userId = FirebaseAuth.instance.currentUser!.uid;
-    var doc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
-    if (doc.exists) {
-      Map<String, dynamic>? data = doc.data();
-      _initTextControllers(data);
-      setState(() {
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      
+    setState(() { _isLoading = true; });
+    try {
+      var userId = FirebaseAuth.instance.currentUser!.uid;
+      var doc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      if (doc.exists) {
+        _initTextControllers(doc.data());
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
+    } finally {
+      setState(() { _isLoading = false; });
     }
   }
 
   void _initTextControllers(Map<String, dynamic>? data) {
-    _nameController = TextEditingController(text: data?['name']);
-    _emailController = TextEditingController(text: data?['email']);
-    _jobTitleController = TextEditingController(text: data?['jobTitle']);
-    _phoneController = TextEditingController(text: data?['phone']);
+    _nameController.text = data?['name'] ?? '';
+    _emailController.text = data?['email'] ?? '';
+    _jobTitleController.text = data?['jobTitle'] ?? '';
+    _phoneController.text = data?['phone'] ?? '';
+    _imageUrl = data?['image_URL'];
   }
 
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _jobTitleController.dispose();
-     _phoneController.dispose(); 
-    super.dispose();
+  Future<void> _updateProfilePhoto() async {
+    final _picker = ImagePicker();
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      File imageFile = File(photo.path);
+      var userId = FirebaseAuth.instance.currentUser!.uid;
+      var storageRef = FirebaseStorage.instance.ref().child('user_images/$userId');
+      var uploadTask = storageRef.putFile(imageFile);
+      var storageSnapshot = await uploadTask.whenComplete(() {});
+      _imageUrl = await storageSnapshot.ref.getDownloadURL();
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Profile", style: TextStyle(color: Colors.white)),
-         elevation: 0,
+        title: const Text("Edit Profile"),
         backgroundColor: primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.save, color: Colors.white),
+            icon: const Icon(Icons.save),
             onPressed: _isLoading ? null : _saveProfile,
           ),
         ],
@@ -80,7 +83,7 @@ class _EditProfilePageState extends State<EditProfile> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -89,6 +92,12 @@ class _EditProfilePageState extends State<EditProfile> {
                     _buildTextField(_emailController, "Email", "Please enter your email"),
                     _buildTextField(_phoneController, "Phone", "Please enter your phone number"),
                     _buildTextField(_jobTitleController, "Job Title", "Please enter your job title"),
+                    if (_imageUrl != null)
+                      Image.network(_imageUrl!, height: 100, width: 100),
+                    ElevatedButton(
+                      onPressed: _updateProfilePhoto,
+                      child: const Text('Update Profile Photo'),
+                    ),
                   ],
                 ),
               ),
@@ -101,35 +110,35 @@ class _EditProfilePageState extends State<EditProfile> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: labelTextStyle,
-        enabledBorder: UnderlineInputBorder(      
-          borderSide: BorderSide(color: primaryColor),   
-        ),  
-        focusedBorder: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: primaryColor),
         ),
-        border: UnderlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: primaryColor),
         ),
       ),
-      style: inputTextStyle,
       validator: (value) => value!.isEmpty ? validationMessage : null,
     );
   }
 
   void _saveProfile() async {
-    final form = _formKey.currentState;
-    if (form != null && form.validate()) {
-      var userId = FirebaseAuth.instance.currentUser!.uid;
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'name': _nameController.text,
-        'email': _emailController.text,
-        'jobTitle': _jobTitleController.text,
-         'phone': _phoneController.text, 
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile updated successfully!', style: TextStyle(color: Colors.white))));
-      Navigator.pop(context);
+    if (_formKey.currentState!.validate()) {
+      setState(() { _isLoading = true; });
+      try {
+        var userId = FirebaseAuth.instance.currentUser!.uid;
+        await FirebaseFirestore.instance.collection('requests').doc(userId).set({
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'jobTitle': _jobTitleController.text,
+          'phone': _phoneController.text, 
+          'image_URL': _imageUrl ?? '',
+        });
+        Navigator.pop(context);
+      } catch (e) {
+        print("Failed to save data: $e");
+      } finally {
+        setState(() { _isLoading = false; });
+      }
     }
   }
 }
