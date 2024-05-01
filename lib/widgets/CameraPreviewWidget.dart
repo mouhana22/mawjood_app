@@ -71,7 +71,7 @@ class CameraPreviewWidgetState extends State<CameraPreviewWidget> {
           return Center(
             child: SizedBox(
               height: 250,
-              width: 250,
+              width: 280,
               child: CameraPreview(_controller),
             ),
           );

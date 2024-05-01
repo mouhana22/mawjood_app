@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                                       options: FaceDetectorOptions())
                                   .processImage(inputImage);
                               // If there is faces then behave normally
-                              if (location = true) {
+                              if (location == true) {
                                 if (faces.isNotEmpty) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(const SnackBar(
