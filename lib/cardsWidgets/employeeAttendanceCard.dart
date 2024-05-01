@@ -139,7 +139,7 @@ void filterEmployees(String query) {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 120),
+          padding: const EdgeInsets.symmetric(horizontal: 100),
           child: CustomIconButton(
             icon: Icons.date_range,
             text: DateFormat('yyyy-MM-dd').format(_selectedDate),
