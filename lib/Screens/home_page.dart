@@ -191,13 +191,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-// onPressed: () {
-//                               if(location == null){
-//                                 return;
-//                               }
-//                               if (widget.hasAccount && location!) {
-//                                 Navigator.push(
-//                                   context,
-//                                   MaterialPageRoute(
-//                                       builder: (context) => CheckIn()),
-//                                 );
