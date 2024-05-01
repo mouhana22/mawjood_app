@@ -24,7 +24,7 @@ class CameraPreviewWidgetState extends State<CameraPreviewWidget> {
     final cameras = await availableCameras();
     // Find the front camera among the available cameras
     final frontCamera = cameras.firstWhere(
-      (camera) => camera.lensDirection == CameraLensDirection.back,
+      (camera) => camera.lensDirection == CameraLensDirection.front,
       orElse: () => cameras.first,
     );
     // Initialize the camera controller

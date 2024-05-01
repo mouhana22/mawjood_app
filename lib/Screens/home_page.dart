@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mawjood_app/Screens/CheckIn.dart';
+import 'package:mawjood_app/Screens/WrongLocation.dart';
 import 'package:mawjood_app/screens/Unrecognized.dart';
 import 'package:mawjood_app/screens/RegisterPage.dart';
 import 'package:mawjood_app/Screens/login.dart';
@@ -143,35 +144,62 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.only(bottom: 50.0),
                           child: CustomIconButton(
                             onPressed: () async {
-                              if (widget.hasAccount && location!) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        "You must be registered and in the correct location to check in."),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                                return;
-                              }
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Please wait"),
+                                duration: Duration(seconds: 1),
+                              ));
+                              // Take a picture
                               final image = await _cameraPreviewKey
                                   .currentState!
                                   .takePicture();
-                              var recognizedId =
-                                  await faceRecognition(image!.path);
-                              if (recognizedId != null) {
+                              final inputImage =
+                                  InputImage.fromFilePath(image!.path);
+                              // Deteced faces
+                              final faces = await FaceDetector(
+                                      options: FaceDetectorOptions())
+                                  .processImage(inputImage);
+                              // If there is faces then behave normally
+                              if (location = true) {
+                                if (faces.isNotEmpty) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text("Face detected"),
+                                    duration: Duration(seconds: 1),
+                                  ));
+                                  // Face recognition
+                                  final recognizedId =
+                                      await faceRecognition(image!.path);
+                                  if (recognizedId != null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CheckIn(
+                                                id: recognizedId,
+                                              )),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Unrecognized()),
+                                    );
+                                  }
+                                } else {
+                                  // If there is no faces show a snackbar
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text("No face detected"),
+                                    duration: Duration(seconds: 2),
+                                  ));
+                                }
+                              } else {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          CheckIn(id: recognizedId)),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                        Text("No recognizable face detected"),
-                                    duration: Duration(seconds: 2),
-                                  ),
+                                          const WrongLocation()),
                                 );
                               }
                             },
@@ -194,7 +222,7 @@ class _HomePageState extends State<HomePage> {
             bottom: 0,
             child: CameraPreviewWidget(
               key: _cameraPreviewKey,
-            ),
+            ), // Add the CameraPreviewWidget here
           ),
         ],
       ),

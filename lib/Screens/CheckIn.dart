@@ -1,6 +1,3 @@
-// Mohammed ALGhamdi
-// Mohalatq88@gmail.com
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +16,8 @@ class CheckIn extends StatelessWidget {
   void checkIn() {
     DateTime now = DateTime.now();
     String today = DateFormat('yyyyMMdd').format(now);
+    String timeOnly =
+        DateFormat('HH:mm:ss').format(now); // Format for time only
     DocumentReference docRef = FirebaseFirestore.instance
         .collection('Attendance')
         .doc(today)
@@ -26,7 +25,7 @@ class CheckIn extends StatelessWidget {
         .doc();
     refDocId = docRef.id;
     docRef.set({
-      'checkIn': FieldValue.serverTimestamp(),
+      'checkInTime': timeOnly, // Store the formatted time
       'userId': id,
     });
   }
@@ -34,17 +33,21 @@ class CheckIn extends StatelessWidget {
   void checkOut() {
     DateTime now = DateTime.now();
     String today = DateFormat('yyyyMMdd').format(now);
+    String timeOnly =
+        DateFormat('HH:mm:ss').format(now); // Format for time only
     DocumentReference docRef = FirebaseFirestore.instance
         .collection('Attendance')
         .doc(today)
         .collection('users')
         .doc(refDocId);
-    docRef.update({'checkOut': FieldValue.serverTimestamp()});
+    docRef.update({
+      'checkOutTime': timeOnly, // Update with the formatted time
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    checkIn();
+    checkIn(); // Consider the implications of calling this in build method
     return Scaffold(
       backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
       body: SafeArea(
@@ -64,7 +67,8 @@ class CheckIn extends StatelessWidget {
                 title: 'Successfully Checked in',
                 textColor: Color.fromRGBO(140, 170, 52, 1),
                 color: Color.fromRGBO(222, 231, 194, 1),
-                showDateTime: true, // Pass true to show DateTimeWidget
+                showDateTime:
+                    true, // Assuming you still want to show something here
               ),
               const SizedBox(height: 16),
               const Spacer(),

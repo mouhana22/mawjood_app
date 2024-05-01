@@ -10,8 +10,9 @@ class StatusBox extends StatelessWidget {
   final String title;
   final Color textColor;
   final Color color;
-  final bool
-      showDateTime; // New parameter to indicate whether to show DateTimeWidget
+  final bool showDateTime;
+  final String? additionalText;
+// New parameter to indicate whether to show DateTimeWidget
 
   const StatusBox({
     super.key,
@@ -20,7 +21,9 @@ class StatusBox extends StatelessWidget {
     required this.title,
     required this.textColor,
     required this.color,
-    this.showDateTime = true, // Default value to true
+    this.showDateTime = true,
+    this.additionalText,
+// Default value to true
   });
 
   @override
