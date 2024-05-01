@@ -29,7 +29,7 @@ class _EmployeeRequestCardState extends State<EmployeeRequestCard> {
     getData();
   }
 
-getData() async {
+Future<dynamic> getData() async {
   final db = FirebaseFirestore.instance;
   try {
     QuerySnapshot querySnapshot = await db.collection("requests").get();
@@ -49,7 +49,6 @@ getData() async {
 
 
 void filterEmployees(String query) {
-  //print("Filtering employees with query: $query");
   setState(() {
     if (query.isEmpty) {
       // If the search query is empty, show all employees
@@ -61,7 +60,6 @@ void filterEmployees(String query) {
         return name.contains(query.toLowerCase());
       }).toList();
     }
-    //print("Filtered employees: $_filteredEmployees");
   });
 }
 
@@ -69,28 +67,31 @@ void filterEmployees(String query) {
   @override
   Widget build(BuildContext context) {
     
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            onChanged: filterEmployees,
-            decoration: InputDecoration(
-              hintText: 'Search...',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50.0)),
+    return RefreshIndicator(
+      onRefresh: getData,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: filterEmployees,
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50.0)),
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: EmployeeCard(
-            employees: _filteredEmployees,
-            infoRow: ["jobTitle", "email", "phone"],
-            actionRow: [acceptButton, rejectButton],
+          Expanded(
+            child: EmployeeCard(
+              employees: _filteredEmployees,
+              infoRow: ["jobTitle", "email", "phone"],
+              actionRow: [acceptButton, rejectButton],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

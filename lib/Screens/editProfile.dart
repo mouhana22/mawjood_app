@@ -125,25 +125,31 @@ class _EditProfilePageState extends State<EditProfile> {
     );
   }
 
-  void _saveProfile() async {
+void _saveProfile() async {
     if (_formKey.currentState!.validate()) {
-      setState(() { _isLoading = true; });
+      setState(() {
+        _isLoading = true;
+      });
       try {
         var userId = FirebaseAuth.instance.currentUser!.uid;
-        await FirebaseFirestore.instance.collection('requests').doc(userId).update({
-          'name': _nameController.text,
-          'email': _emailController.text,
-          'jobTitle': _jobTitleController.text,
-          'phone': _phoneController.text,
-          'image_URL': _imageUrl ?? '',
-          'admin': _admin,  
-          'status': _status,  
-        });
+        await FirebaseFirestore.instance.collection('requests').doc(userId).set(
+            {
+              'id': userId, // Add the userId as "id"
+              'name': _nameController.text,
+              'email': _emailController.text,
+              'jobTitle': _jobTitleController.text,
+              'phone': _phoneController.text,
+              'image_URL': _imageUrl ?? '',
+              'admin': _admin,
+              'status': _status,
+            }); 
         Navigator.pop(context);
       } catch (e) {
         print("Failed to save data: $e");
       } finally {
-        setState(() { _isLoading = false; });
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
