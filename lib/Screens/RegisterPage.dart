@@ -55,8 +55,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
       final url = await storagePath.getDownloadURL(); // Corrected line
 
-      print(url);
-      print("----------------------------------");
       FirebaseFirestore.instance
           .collection('requests')
           .doc(userCredential.user!.uid)
@@ -65,9 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
         'phone': phoneController.text.trim(),
         'email': emailController.text.trim(),
         'jobTitle': jobController.text.trim(),
-        'admin': false,
         'status': true,
-        'id': userCredential.user!.uid,
         'image_URL': url,
       });
 

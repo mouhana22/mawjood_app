@@ -33,7 +33,7 @@ class CameraPreviewWidgetState extends State<CameraPreviewWidget> {
       ResolutionPreset.medium,
     );
     // Initialize the controller future
-    _initializeControllerFuture = _controller!.initialize();
+    _initializeControllerFuture = _controller.initialize();
     // Update the state once the controller is initialized
 
     if (mounted) {
@@ -57,7 +57,7 @@ class CameraPreviewWidgetState extends State<CameraPreviewWidget> {
   @override
   void dispose() {
     // Dispose of the camera controller when the widget is disposed
-    _controller?.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -72,7 +72,7 @@ class CameraPreviewWidgetState extends State<CameraPreviewWidget> {
             child: SizedBox(
               height: 250,
               width: 250,
-              child: CameraPreview(_controller!),
+              child: CameraPreview(_controller),
             ),
           );
         } else {

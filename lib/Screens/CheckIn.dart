@@ -1,7 +1,9 @@
 // Mohammed ALGhamdi
 // Mohalatq88@gmail.com
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mawjood_app/Screens/CheckOut.dart';
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/iconButton.dart';
@@ -9,10 +11,40 @@ import 'package:mawjood_app/widgets/imageWidget.dart';
 import 'package:mawjood_app/widgets/statusBox.dart';
 
 class CheckIn extends StatelessWidget {
-  const CheckIn({super.key});
+  final String id;
+  late String refDocId;
+
+  CheckIn({super.key, required this.id});
+
+  void checkIn() {
+    DateTime now = DateTime.now();
+    String today = DateFormat('yyyyMMdd').format(now);
+    DocumentReference docRef = FirebaseFirestore.instance
+        .collection('Attendance')
+        .doc(today)
+        .collection('users')
+        .doc();
+    refDocId = docRef.id;
+    docRef.set({
+      'checkIn': FieldValue.serverTimestamp(),
+      'userId': id,
+    });
+  }
+
+  void checkOut() {
+    DateTime now = DateTime.now();
+    String today = DateFormat('yyyyMMdd').format(now);
+    DocumentReference docRef = FirebaseFirestore.instance
+        .collection('Attendance')
+        .doc(today)
+        .collection('users')
+        .doc(refDocId);
+    docRef.update({'checkOut': FieldValue.serverTimestamp()});
+  }
 
   @override
   Widget build(BuildContext context) {
+    checkIn();
     return Scaffold(
       backgroundColor: const Color.fromRGBO(238, 242, 255, 1),
       body: SafeArea(
@@ -40,6 +72,7 @@ class CheckIn extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: CustomIconButton(
                   onPressed: () {
+                    checkOut();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const CheckOut()),

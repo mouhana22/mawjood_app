@@ -1,18 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mawjood_app/Screens/CheckIn.dart';
 import 'package:mawjood_app/screens/Unrecognized.dart';
-import 'package:mawjood_app/screens/RegisterPage.dart'; // Import RegisterPage
+import 'package:mawjood_app/screens/RegisterPage.dart';
 import 'package:mawjood_app/Screens/login.dart';
 import 'package:mawjood_app/widgets/CameraPreviewWidget.dart';
 import 'package:mawjood_app/widgets/checkLocation.dart';
-import 'package:mawjood_app/widgets/imageWidget.dart'; // Import LoginPage
-import 'package:mawjood_app/widgets/iconButton.dart'; // Import CustomIconButton widget
-import 'package:mawjood_app/widgets/btnTypes.dart'; // Import btnType enum
+import 'package:mawjood_app/widgets/imageWidget.dart';
+import 'package:mawjood_app/widgets/iconButton.dart';
+import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
@@ -27,7 +29,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool? location;
 
-  Future<String?> faceRecoginiton(String imagePath) async {
+  Future<String?> faceRecognition(String imagePath) async {
     try {
       final api = Uri.parse('http://mawjoodapi.pythonanywhere.com/recognize');
       var request = http.MultipartRequest('POST', api);
@@ -36,15 +38,26 @@ class _HomePageState extends State<HomePage> {
       if (response.statusCode == 200) {
         var responseData = await response.stream.bytesToString();
         var jsonResponse = json.decode(responseData);
-        return jsonResponse.toString();
+        if (jsonResponse['recognized_faces'].isNotEmpty) {
+          var firstFace = jsonResponse['recognized_faces'][0];
+          if (firstFace.containsKey('accuracy')) {
+            return firstFace['doc_ID'];
+          } else {
+            return null;
+          }
+        } else {
+          return null;
+        }
+      } else {
+        return "No face recognized";
       }
     } catch (e) {
       return e.toString();
     }
   }
+
   @override
   void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     location = await CheckLocation().checkLocation();
   }
@@ -130,39 +143,36 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.only(bottom: 50.0),
                           child: CustomIconButton(
                             onPressed: () async {
-                              if(location == null){
+                              if (widget.hasAccount && location!) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        "You must be registered and in the correct location to check in."),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
                                 return;
                               }
-                              if (widget.hasAccount && location!) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CheckIn()),
-                                );
-                              }
-                              // Take a picture
                               final image = await _cameraPreviewKey
                                   .currentState!
                                   .takePicture();
-                              var response = await faceRecoginiton(image!.path);
-                              if (response != null) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text(response),
-                                  duration: Duration(seconds: 2),
-                                ));
-                              }
-                              final inputImage =
-                                  InputImage.fromFilePath(image!.path);
-                              // Deteced faces
-                              final faces = await FaceDetector(
-                                      options: FaceDetectorOptions())
-                                  .processImage(inputImage);
-
-                              // If there is faces then behave normally
-                              if (true) {
-                                // If there is no faces show a snackbar
-                            
+                              var recognizedId =
+                                  await faceRecognition(image!.path);
+                              if (recognizedId != null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CheckIn(id: recognizedId)),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text("No recognizable face detected"),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
                               }
                             },
                             text: 'Check-in',
@@ -184,20 +194,10 @@ class _HomePageState extends State<HomePage> {
             bottom: 0,
             child: CameraPreviewWidget(
               key: _cameraPreviewKey,
-            ), // Add the CameraPreviewWidget here
+            ),
           ),
         ],
       ),
     );
   }
 }
-// onPressed: () {
-//                               if(location == null){
-//                                 return;
-//                               }
-//                               if (widget.hasAccount && location!) {
-//                                 Navigator.push(
-//                                   context,
-//                                   MaterialPageRoute(
-//                                       builder: (context) => CheckIn()),
-//                                 );
