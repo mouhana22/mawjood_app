@@ -16,6 +16,7 @@ class LocationCard extends StatefulWidget {
 
 class _LocationCardState extends State<LocationCard> {
   List<QueryDocumentSnapshot<Object?>>? _locations;
+  CollectionReference<Map<String, dynamic>>? documents;
   bool readOnly = true;
   
   @override
@@ -36,6 +37,7 @@ class _LocationCardState extends State<LocationCard> {
       builder: (context, snapshot) {
         if(snapshot.hasData){
           _locations = snapshot.data?.docs.reversed.toList();
+          documents = FirebaseFirestore.instance.collection('locations');
         }
         return ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -49,26 +51,25 @@ class _LocationCardState extends State<LocationCard> {
               return CardWidget(
                 cardTitle: name,
                 cardBody: [
-                    MapWidget(name: name, raduis: radius, lat: lat, lng: lng,),
-                    const SizedBox(height: 20,),
-                    InputTextField(label: "name:", content: name, readOnly: readOnly,),
-                    const SizedBox(height: 20,),
-                    InputTextField(label: "Address:", content: address, readOnly: readOnly,),
-                    const SizedBox(height: 20,),
-                    InputTextField(label: "Radius:", content: radius.toString(), readOnly: readOnly,),
-                    const SizedBox(height: 20,),
-                    if(readOnly)...[
-                      CustomIconButton(text: "Edit Location", icon: Icons.settings, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,)
-                    ]else...[
-                      CustomIconButton(text: "Save Changes", icon: Icons.check, type: btnType.Primary,width: 320, height: 50, onPressed: editFields,)
-                    ],
-                    const SizedBox(height: 10,),
+                  MapWidget(name: name, raduis: radius, lat: lat, lng: lng,),
+                  const SizedBox(height: 20,),
+                  InputTextField(label: "Name:", content: name, readOnly: readOnly,),
+                  const SizedBox(height: 20,),
+                  InputTextField(label: "Address:", content: address, readOnly: readOnly,),
+                  const SizedBox(height: 20,),
+                  InputTextField(label: "Radius:", content: radius.toString(), readOnly: readOnly,),
+                  const SizedBox(height: 20,),
+                  CustomIconButton(text: 'Delete Location', icon: Icons.delete, type: btnType.Primary, width: 320, height: 50, onPressed:()
+                    {
+                      documents?.doc(_locations?[index].id).delete();
+                    }),
+                  const SizedBox(height: 10,),
                 ],
               );
             });
       }
     );
-      }
+  }
 }
 
 //print('-----------------------------------------');

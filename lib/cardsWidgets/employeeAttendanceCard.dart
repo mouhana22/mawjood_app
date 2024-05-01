@@ -44,7 +44,6 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
   selectedDateAttendance = [];
   // Iterate over userAttendance
   for (var attendance in userAttendance) {
-    print(attendance);
     String userId = attendance['userID'];
 
     // Find corresponding employee by userID
@@ -108,7 +107,6 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
   }
 
 void filterEmployees(String query) {
-  //print("Filtering employees with query: $query");
   setState(() {
     if (query.isEmpty) {
       // If the search query is empty, show all employees
@@ -120,7 +118,6 @@ void filterEmployees(String query) {
         return name.contains(query.toLowerCase());
       }).toList();
     }
-    //print("Filtered employees: $_filteredEmployees");
   });
 }
 
@@ -150,6 +147,7 @@ void filterEmployees(String query) {
             onPressed: () {
               _selectDate(context);
             },
+            width: 250,
           ),
         ),
         const SizedBox(height: 8.0), // Add space between search bar and date button

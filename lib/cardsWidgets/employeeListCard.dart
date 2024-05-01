@@ -25,13 +25,16 @@ class _EmployeeListCardState extends State<EmployeeListCard> {
     getData();
   }
 
-getData() async {
+Future<dynamic> getData() async {
   final db = FirebaseFirestore.instance;
   try {
     QuerySnapshot querySnapshot = await db.collection("users").get();
     List<dynamic> fetchedEmployees = [];
     querySnapshot.docs.forEach((docSnapshot) {
-      fetchedEmployees.add(docSnapshot.data());
+      Map<String, dynamic>? fetchedEmployee = docSnapshot.data() as Map<String, dynamic>?;
+
+      if(!(fetchedEmployee?["admin"] == true))
+          fetchedEmployees.add(docSnapshot.data());
     });
     setState(() {
       _employees = fetchedEmployees;
@@ -43,7 +46,6 @@ getData() async {
 }
 
 void filterEmployees(String query) {
-  //print("Filtering employees with query: $query");
   setState(() {
     if (query.isEmpty) {
       // If the search query is empty, show all employees
@@ -55,34 +57,37 @@ void filterEmployees(String query) {
         return name.contains(query.toLowerCase());
       }).toList();
     }
-    //print("Filtered employees: $_filteredEmployees");
   });
 }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            onChanged: filterEmployees,
-            decoration: InputDecoration(
-              hintText: 'Search...',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50.0)),
+    return RefreshIndicator(
+      onRefresh: getData,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: filterEmployees,
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: EmployeeCard(
-            employees: _filteredEmployees,
-            infoRow: ["jobTitle", "email", "phone", "status"],
-            actionRow: [statusButtons, deleteButton],
+          Expanded(
+            child: EmployeeCard(
+              employees: _filteredEmployees,
+              infoRow: ["jobTitle", "email", "phone", "status"],
+              actionRow: [statusButtons, deleteButton],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -95,7 +100,6 @@ Widget statusButtons(employee) {
           fontSize: 10,
           onPressed: () {
             // Update status to false (deactivate)
-            print(employee['id']);
             _updateEmployeeStatus(employee, false);
           },
         )

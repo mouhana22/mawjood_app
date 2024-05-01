@@ -20,4 +20,3 @@ class _EmployeeListState extends State<EmployeeList> {
       );
   }
 }
-// AppBar(title: const Text('Employees List'))

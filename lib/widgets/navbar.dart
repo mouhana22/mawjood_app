@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mawjood_app/Screens/Profile.dart';
+import 'package:mawjood_app/Screens/login.dart';
+import 'package:mawjood_app/widgets/btnTypes.dart';
+import 'package:mawjood_app/widgets/iconButton.dart';
 
 class NavBar extends StatefulWidget {
   final List <Widget> screens;
@@ -17,11 +22,22 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
+  void _logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(context,
+    MaterialPageRoute(builder: (context) => const LoginPage()),);
+  }
+
   @override
   Widget build(BuildContext context) {
       return Scaffold(
         appBar: AppBar(
           title: widget.appBars[selectedIndex],
+          centerTitle: true,
+          actions: [
+            IconButton(onPressed: _logout, icon: const Icon(Icons.logout), color: Colors.indigo[800],),
+            const SizedBox(width: 10,)
+          ],
         ),
         body: IndexedStack(
           index: selectedIndex,
@@ -48,12 +64,7 @@ class _NavBarState extends State<NavBar> {
               icon: Icon(Icons.place_outlined),
               activeIcon: Icon(Icons.place),
               label: 'Location',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.logout_outlined),
-              activeIcon: Icon(Icons.logout),
-              label: 'Logout',
-            ),
+            )
           ],
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.indigo[800],
