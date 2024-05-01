@@ -56,11 +56,17 @@ class _LoginPageState extends State<LoginPage> {
       final bool usertype = userData['admin'] ?? false;
 
       // Navigate based on user type
-      if (!usertype) {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
-      } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AdminScreen()));
-      }
+        if (!usertype) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()));
+        } else {
+          //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AdminScreen()));
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const AdminScreen()),
+            (route) => false, // Remove all routes from the stack
+          );
+        }
     }
   } on FirebaseAuthException catch (e) {
     var errorMessage = "An error occurred, please try again.";

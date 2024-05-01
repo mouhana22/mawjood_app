@@ -1,61 +1,125 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mawjood_app/widgets/btnTypes.dart';
-import 'package:mawjood_app/widgets/infoField.dart';
-import 'dart:convert';
-import './employeeCard.dart';
 import 'package:mawjood_app/widgets/iconButton.dart';
+import 'package:mawjood_app/widgets/infoField.dart';
+import './employeeCard.dart';
 
 class EmployeeAttendanceCard extends StatefulWidget {
   const EmployeeAttendanceCard({Key? key}) : super(key: key);
 
   @override
-  State<EmployeeAttendanceCard> createState() =>
-      _EmployeeAttendanceCardState();
+  State<EmployeeAttendanceCard> createState() => _EmployeeAttendanceCardState();
 }
 
 class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
   late List<dynamic> _employees;
   late List<dynamic> _filteredEmployees;
   late DateTime _selectedDate; // Store the selected date
+  late List<dynamic> userAttendance;
+  late List<dynamic> selectedDateAttendance;
 
   @override
   void initState() {
     super.initState();
     _employees = [];
     _filteredEmployees = [];
-    _selectedDate = DateTime.now(); // Initialize with current date
-    fetchEmployees();
+    userAttendance = [];
+    selectedDateAttendance = [];
+    _selectedDate = DateTime.now();
+    getAttendanceByDate(_selectedDate);
+
   }
 
-  void fetchEmployees() async {
-    const url = "https://65c8f413a4fbc162e1126b21.mockapi.io/employee";
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    setState(() {
-      _employees = jsonDecode(response.body);
-      _filteredEmployees = _employees
-          .where((employee) =>
-              DateFormat('yyyy-MM-dd').format(DateTime.parse(employee['checkIn'])) ==
-              DateFormat('yyyy-MM-dd').format(_selectedDate))
-          .toList();
-    });
+ Future getAttendanceByDate(DateTime date) async {
+  final DateFormat formatter = DateFormat('yyyyMMdd');
+  final String formatted = formatter.format(_selectedDate);
+  await fetchAttendanceData(formatted);
+  await getData();
+  getEmployeesWithAttendance();
+}
+
+ Future getEmployeesWithAttendance() async{
+  selectedDateAttendance = [];
+  // Iterate over userAttendance
+  for (var attendance in userAttendance) {
+    String userId = attendance['userID'];
+
+    // Find corresponding employee by userID
+    Map<String, dynamic> employee = _employees.firstWhere((emp) => emp['id'] == userId,orElse: () => Map<String, dynamic>(),);
+
+
+    if (employee != null) {
+      // If employee found, add attendance info to employee data
+            Map<String, dynamic> employeeWithAttendance = {
+        'checkIn': attendance['checkIn'],
+        'checkOut': attendance['checkOut'],
+        ...employee, 
+      };
+      selectedDateAttendance.add(employeeWithAttendance);
+    }
+  }
+  setState(() {
+        _filteredEmployees = List.from(selectedDateAttendance);
+        userAttendance =[];
+      });
+}
+
+
+
+
+
+  Future fetchAttendanceData(String date) async {
+      final db = FirebaseFirestore.instance;
+    try {
+      QuerySnapshot snapshot = await db
+          .collection('Attendance')
+          .doc(date) // Document ID is the chosen date
+          .collection('users')
+          .get();
+      snapshot.docs.forEach((doc) {
+        userAttendance.add(doc.data()); // Add userID to the list
+      });
+      setState(() {
+        userAttendance = userAttendance; 
+      });
+    } catch (e) {
+      print("Error fetching attendance data: $e");
+    }
   }
 
-  void filterEmployees(String query) {
-    setState(() {
-      _filteredEmployees = _employees.where((employee) {
+
+  Future getData() async {
+    final db = FirebaseFirestore.instance;
+    try {
+      QuerySnapshot querySnapshot = await db.collection("users").get();
+      List<dynamic> fetchedEmployees = [];
+      querySnapshot.docs.forEach((docSnapshot) {
+        fetchedEmployees.add(docSnapshot.data());
+      });
+      setState(() {
+        _employees = fetchedEmployees;
+      });
+    } catch (e) {
+      print("Error fetching data: $e");
+    }
+  }
+
+void filterEmployees(String query) {
+  setState(() {
+    if (query.isEmpty) {
+      // If the search query is empty, show all employees
+      _filteredEmployees = List.from(selectedDateAttendance);
+    } else {
+      // Filter the employees whose name contains the search query
+      _filteredEmployees = selectedDateAttendance.where((employee) {
         final name = employee['name'].toString().toLowerCase();
-        final checkInDate = DateTime.parse(employee['checkIn']);
-        // Check if employee's name contains the query and check-in date matches selected date
-        return name.contains(query.toLowerCase()) &&
-            checkInDate.year == _selectedDate.year &&
-            checkInDate.month == _selectedDate.month &&
-            checkInDate.day == _selectedDate.day;
+        return name.contains(query.toLowerCase());
       }).toList();
-    });
-  }
+    }
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +134,7 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
               hintText: 'Search...',
               prefixIcon: Icon(Icons.search),
               border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(50.0)),
+                borderRadius: BorderRadius.circular(50.0)),
             ),
           ),
         ),
@@ -83,9 +147,9 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
             onPressed: () {
               _selectDate(context);
             },
+            width: 250,
           ),
         ),
-
         const SizedBox(height: 8.0), // Add space between search bar and date button
         Expanded(
           child: EmployeeCard(
@@ -99,9 +163,8 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
   }
 
   Widget checkInTime(employee) {
-    final DateTime date = DateTime.parse(employee["checkIn"]);
-    final String checkInMsg = "Checked-In At: ${DateFormat.jm().format(date)}";
-    return InfoField(
+    final String checkInMsg = "Checked-In At: ${employee['checkIn']}";
+        return InfoField(
       data: checkInMsg,
       height: 34,
       width: 137.5,
@@ -110,10 +173,8 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
   }
 
   Widget checkOutTime(employee) {
-    final DateTime date = DateTime.parse(employee["checkOut"]);
-    final String checkOutMsg =
-        "Checked-Out At: ${DateFormat.jm().format(date)}";
-    return InfoField(
+    final String checkOutMsg = "Checked-Out At: ${employee['checkOut']}";
+        return InfoField(
       data: checkOutMsg,
       height: 34,
       width: 137.5,
@@ -128,11 +189,12 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2100),
     );
-    if (picked != null && picked != _selectedDate){
+    if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
-        filterEmployees(""); // Reset filter when date changes
-        fetchEmployees(); // Update employees for the selected date
+        _filteredEmployees = [];
+        getAttendanceByDate(_selectedDate);
+
       });
     }
   }

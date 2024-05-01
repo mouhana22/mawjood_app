@@ -21,6 +21,8 @@ class _EditProfilePageState extends State<EditProfile> {
   TextEditingController _jobTitleController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   String? _imageUrl;
+  bool? _admin; // Admin flag
+  bool? _status; // User status
 
   final Color primaryColor = const Color(0xFF3730A3);
 
@@ -51,6 +53,8 @@ class _EditProfilePageState extends State<EditProfile> {
     _jobTitleController.text = data?['jobTitle'] ?? '';
     _phoneController.text = data?['phone'] ?? '';
     _imageUrl = data?['image_URL'];
+    _admin = data?['admin']; // Initialize the admin field
+    _status = data?['status']; // Initialize the status field
   }
 
   Future<void> _updateProfilePhoto() async {
@@ -121,23 +125,31 @@ class _EditProfilePageState extends State<EditProfile> {
     );
   }
 
-  void _saveProfile() async {
+void _saveProfile() async {
     if (_formKey.currentState!.validate()) {
-      setState(() { _isLoading = true; });
+      setState(() {
+        _isLoading = true;
+      });
       try {
         var userId = FirebaseAuth.instance.currentUser!.uid;
-        await FirebaseFirestore.instance.collection('users').doc(userId).set({
-          'name': _nameController.text,
-          'email': _emailController.text,
-          'jobTitle': _jobTitleController.text,
-          'phone': _phoneController.text, 
-          'image_URL': _imageUrl ?? '',
-        });
+        await FirebaseFirestore.instance.collection('requests').doc(userId).set(
+            {
+              'id': userId, // Add the userId as "id"
+              'name': _nameController.text,
+              'email': _emailController.text,
+              'jobTitle': _jobTitleController.text,
+              'phone': _phoneController.text,
+              'image_URL': _imageUrl ?? '',
+              'admin': _admin,
+              'status': _status,
+            }); 
         Navigator.pop(context);
       } catch (e) {
         print("Failed to save data: $e");
       } finally {
-        setState(() { _isLoading = false; });
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
