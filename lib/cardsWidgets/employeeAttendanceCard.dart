@@ -44,8 +44,8 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
   selectedDateAttendance = [];
   // Iterate over userAttendance
   for (var attendance in userAttendance) {
-    String userId = attendance['userID'];
-
+    String userId = attendance['userId'];
+    print(attendance);
     // Find corresponding employee by userID
     Map<String, dynamic> employee = _employees.firstWhere((emp) => emp['id'] == userId,orElse: () => Map<String, dynamic>(),);
 
@@ -53,8 +53,8 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
     if (employee != null) {
       // If employee found, add attendance info to employee data
             Map<String, dynamic> employeeWithAttendance = {
-        'checkIn': attendance['checkIn'],
-        'checkOut': attendance['checkOut'],
+        'checkInTime': attendance['checkInTime'],
+        'checkOutTime': attendance['checkOutTime'],
         ...employee, 
       };
       selectedDateAttendance.add(employeeWithAttendance);
@@ -83,6 +83,7 @@ class _EmployeeAttendanceCardState extends State<EmployeeAttendanceCard> {
       });
       setState(() {
         userAttendance = userAttendance; 
+        
       });
     } catch (e) {
       print("Error fetching attendance data: $e");
@@ -139,7 +140,7 @@ void filterEmployees(String query) {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 120),
+          padding: const EdgeInsets.symmetric(horizontal: 100),
           child: CustomIconButton(
             icon: Icons.date_range,
             text: DateFormat('yyyy-MM-dd').format(_selectedDate),
@@ -147,7 +148,6 @@ void filterEmployees(String query) {
             onPressed: () {
               _selectDate(context);
             },
-            width: 250,
           ),
         ),
         const SizedBox(height: 8.0), // Add space between search bar and date button
@@ -163,7 +163,7 @@ void filterEmployees(String query) {
   }
 
   Widget checkInTime(employee) {
-    final String checkInMsg = "Checked-In At: ${employee['checkIn']}";
+    final String checkInMsg = "Checked-In At: ${employee['checkInTime']}";
         return InfoField(
       data: checkInMsg,
       height: 34,
@@ -173,7 +173,7 @@ void filterEmployees(String query) {
   }
 
   Widget checkOutTime(employee) {
-    final String checkOutMsg = "Checked-Out At: ${employee['checkOut']}";
+    final String checkOutMsg = "Checked-Out At: ${employee['checkOutTime']}";
         return InfoField(
       data: checkOutMsg,
       height: 34,

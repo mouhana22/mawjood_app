@@ -22,10 +22,10 @@ class _AdminScreenState extends State<AdminScreen> {
             EmployeeRequests(),
             Locations(),
           ], appBars: [
-            AppBar(title: const Text('Attendance')),
+            AppBar(title: const Text('Employees Attendance')),
             AppBar(title: const Text('Employees List')),
-            AppBar(title: const Text('Requests')),
-            AppBar(title: const Text('Locations')),
+            AppBar(title: const Text('Employees Requests')),
+            AppBar(title: const Text('Locations'))
           ],);
   }
 }

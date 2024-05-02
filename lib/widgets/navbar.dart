@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mawjood_app/Screens/Profile.dart';
-import 'package:mawjood_app/Screens/login.dart';
+import 'package:mawjood_app/Screens/home_page.dart';
 import 'package:mawjood_app/widgets/btnTypes.dart';
 import 'package:mawjood_app/widgets/iconButton.dart';
 
@@ -25,7 +25,7 @@ class _NavBarState extends State<NavBar> {
   void _logout() async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(context,
-    MaterialPageRoute(builder: (context) => const LoginPage()),);
+    MaterialPageRoute(builder: (context) => const HomePage(hasAccount: true,)),);
   }
 
   @override
