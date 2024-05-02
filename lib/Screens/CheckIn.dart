@@ -25,7 +25,7 @@ class CheckIn extends StatelessWidget {
         .doc();
     refDocId = docRef.id;
     docRef.set({
-      'checkIn': timeOnly, // Store the formatted time
+      'checkInTime': timeOnly, // Store the formatted time
       'userId': id,
     });
   }
@@ -41,7 +41,7 @@ class CheckIn extends StatelessWidget {
         .collection('users')
         .doc(refDocId);
     docRef.update({
-      'checkOut': timeOnly, // Update with the formatted time
+      'checkOutTime': timeOnly, // Update with the formatted time
     });
   }
 
